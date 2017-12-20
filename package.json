@@ -1,0 +1,12 @@
+{
+  "name": "your-app",
+  "version": "0.1.0",
+  "dependencies": {
+    "fast-csv": "^2.4.1",
+    "lodash": "^4.17.4",
+    "materialize-css": "^0.100.2"
+  },
+  "devDependencies": {
+    "electron": "1.7.9"
+  }
+}

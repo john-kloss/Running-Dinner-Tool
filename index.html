@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="index.css"> 
+    <title>Running Dinner Tool</title>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="css/mui.min.css" rel="stylesheet" type="text/css" />
+    <script src="js/mui.min.js"></script>
+
+  </head>
+  <body>
+      <h1>Running Dinner Tool</h1>
+      Für die Nutzung dieses Tools musst du die Teaminformationen in einer Tabelle sammeln. 
+      Eine Vorlage dafür findest du <a href="" id="link-example">hier</a>.
+      Kopiere dir die Tabelle und trage deine Teams ein.
+      <br/>
+      Sobald du fertig bist, exportiere die Datei als CSV (Datei -> Download als -> CSV)
+      und lade die datei über den Upload-Button hoch.
+      <br/>
+      <button class="mui-btn mui-btn--primary" id="button-upload">Upload</button>
+    </div>
+  
+  </body>
+  <script type="text/javascript">
+    require('./upload.js')
+    require('./createPlan.js')
+    require('./showResults.js')
+  </script>
+</html>

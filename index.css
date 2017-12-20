@@ -1,0 +1,20 @@
+input.input-time {
+    border-radius: 30;
+    border-color: #2196F3;
+    border-width: 5px;
+    text-align: center;
+    text-decoration: slategray
+}
+
+textarea {
+    display: block;
+    background: none;
+    padding: 10px;
+    border-width: 0;
+    border-color: transparent;
+    line-height: 1.9;
+    width: 100%;
+    color: black;
+    transition: all 0.28 ease;
+    box-shadow: none;
+}

@@ -5,6 +5,7 @@ const url = require('url');
 const os = require('os');
 const fs = require('fs');
 const shell = require('electron').shell;
+const dialog = require('electron').dialog;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -12,9 +13,12 @@ let win
 
 function createWindow () {
   // Create the browser window.
-  win = new BrowserWindow({icon: path.join( __dirname, 'dinner.png')});
-  win.maximize();
-
+  win = new BrowserWindow({
+    icon: path.join( __dirname, 'dinner.png'), 
+    frame: false,
+    width: 900,
+    height: 600,
+  });
   // and load the index.html of the app.
   win.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
@@ -23,7 +27,8 @@ function createWindow () {
   }))
 
   // Open the DevTools.
-  win.webContents.openDevTools()  
+  //win.webContents.openDevTools()  
+  
   // Emitted when the window is closed.
   win.on('closed', () => {
     // Dereference the window object, usually you would store windows
@@ -63,11 +68,13 @@ ipc.on('groups-planned', (event, groups) => {
   win.webContents.send('show-results', groups);
 })
 
+ipc.on('open-error-dialog', function (event, header, message) {
+  dialog.showErrorBox(header, message);
+})
+
 ipc.on('export-plan', (event) => {
-  //table.webContents.printToPDF
   const pdfPath = path.join(os.tmpdir(), 'plan.pdf')
   const win = BrowserWindow.fromWebContents(event.sender)
-  // Use default printing options
   win.webContents.printToPDF({}, function (error, data) {
     if (error) throw error
     fs.writeFile(pdfPath, data, function (error) {

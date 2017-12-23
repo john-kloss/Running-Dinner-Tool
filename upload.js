@@ -1,9 +1,8 @@
 
 const BrowserWindow = require('electron').remote.BrowserWindow;
-const {dialog} = require('electron').remote;
 const shell = require('electron').shell;
 const ipc = require('electron').ipcRenderer;
-
+const {dialog} = require('electron').remote;
 
 const csv = require('fast-csv');
 const fs = require('fs');
@@ -35,11 +34,12 @@ function handleUpload(files){
     var csvStream = csv()
     .on("data", function(group){
          if (group.length !== 6){
-             dialog.showErrorBox('Fehler beim importieren', 'Bitte entferne alle Kommas aus deiner CSV-Datei.')
+             ipc.send('open-error-dialog', 'Fehler beim importieren', 'Bitte entferne alle Kommas aus deiner CSV-Datei.')
              return;
          }
          if (group[1].includes('&') || group[3].includes('&') || group[4].includes('&')){
-             dialog.showErrorBox('Fehler beim importieren', 'Bitte entferne die &-Zeichen aus der Tabelle');
+            ipc.send('open-error-dialog', 'Fehler beim importieren', 'Bitte entferne die &-Zeichen aus der Tabelle');
+             return;
          }
          if (group[0] === 'Teamnummer') return;
          groups.push({
@@ -52,7 +52,11 @@ function handleUpload(files){
          });
     })
     .on("end", function(){
-         createTable();
+        if (groups.length % 3 === 0){
+            createTable();            
+        } else {
+            ipc.send('open-error-dialog', 'Fehler beim importieren', 'Die Anzahl der Gruppen muss durch 3 teilbar sein.');
+        }
     });
     stream.pipe(csvStream);
 }

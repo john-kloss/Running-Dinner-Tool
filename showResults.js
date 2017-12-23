@@ -27,7 +27,6 @@ function showResults() {
     } 
     const div = document.createElement('div');
     div.setAttribute('class', 'mui-container');
-    div.setAttribute('style', 'padding:20px')
 
     // insert text
     const textSelect = `Wähle nun die Zeiten für Vor-, Haupt- und Nachspeise aus.\n
@@ -37,10 +36,11 @@ function showResults() {
     
     // create the time picker
     const container = document.createElement('div');
-    container.setAttribute('class', 'mui-container-fluid');
+    container.setAttribute('class', 'mui-container-fluid');    
+    
     const row = document.createElement('div');
     row.setAttribute('class', 'mui-row');
-    const meals = ['Vorspeise','Hauptgericht', 'Nachspeise']
+    const meals = ['Vorspeise: ','Hauptgericht: ', 'Nachspeise: ']
     meals.map(meal => {
         const time = document.createElement('div');
         time.setAttribute('class', 'mui-col-md-4');
@@ -51,9 +51,9 @@ function showResults() {
         input.setAttribute('name', meal);
         input.addEventListener('change', (event) => {
             switch(event.target.name){
-                case 'Vorspeise': times.starter = event.target.value; break;
-                case 'Hauptgericht': times.main = event.target.value; break;
-                case 'Nachspeise': times.dessert = event.target.value; break;
+                case meals[0]: times.starter = event.target.value; break;
+                case meals[1]: times.main = event.target.value; break;
+                case meals[2]: times.dessert = event.target.value; break;
             }
             eraseMailLinks();
             createMailLinks(groups, div);
@@ -80,8 +80,6 @@ function showResults() {
         form.setAttribute('widht', '100%');
         form.setAttribute('class', 'mui-form');
         const input = document.createElement('textarea');
-        input.setAttribute('width', '800px');        
-        input.setAttribute('resize', 'none');
         if (key === 'introText') input.setAttribute('name', 'Text zu Beginn');
         if (key === 'endText') input.setAttribute('name', 'Text zum Ende');
         input.setAttribute('placeholder', texts[key]);
@@ -96,7 +94,7 @@ function showResults() {
     })
 
     const divider = document.createElement('div');
-    divider.setAttribute('class', 'mui-divider');
+    divider.setAttribute('class', 'divider');
     div.appendChild(divider);
     const textTable = `Hier noch eine Übersicht über die Zuteilung der Teams.`;
     div.appendChild(document.createTextNode(textTable));
@@ -128,12 +126,12 @@ function showResults() {
     buttonExportPlan.appendChild(document.createTextNode('Download als PDF'))
     buttonExportPlan.setAttribute('class', 'mui-btn mui-btn--primary')
     buttonExportPlan.addEventListener('click', () => {
-        ipc.send('export-plan');
+        ipc.send('export-plan', table);
     })
     div.appendChild(buttonExportPlan);
 
     const divider2 = document.createElement('div');
-    divider2.setAttribute('class', 'mui-divider');
+    divider2.setAttribute('class', 'divider');
     div.appendChild(divider2);
     const textMailLinks = `Hier findest du die Links, mit denen du Mails an die entsprechenden Gruppen verschicken kannst.`
     div.appendChild(document.createTextNode(textMailLinks));
@@ -226,7 +224,7 @@ function generateMailContent(self, i) {
     }
     bodyString = bodyString + texts.endText.replace(/(?:\r\n|\r|\n)/g, '<br />').replace(',','%2C');
     if (bodyString.includes('&')){
-        console.error('Please remove the "&" from your message')
+        ipc.send('open-error-dialog', 'Fehler beim erstellen der Links', 'Bitte entferne die &-Zeichen aus deiner Nachricht.')
     } else {
         return bodyString;        
     }

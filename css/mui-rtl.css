@@ -1027,6 +1027,7 @@ h4, h5, h6 {
 }
 
 .mui-container-fluid:before, .mui-container-fluid:after {
+  margin-top: 20px;
   content: " ";
   display: table;
 }

@@ -4,7 +4,8 @@
   "dependencies": {
     "fast-csv": "^2.4.1",
     "lodash": "^4.17.4",
-    "materialize-css": "^0.100.2"
+    "materialize-css": "^0.100.2",
+    "moment": "^2.20.1"
   },
   "devDependencies": {
     "electron": "1.7.9"

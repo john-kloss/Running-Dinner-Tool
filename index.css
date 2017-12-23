@@ -1,3 +1,11 @@
+
+html {
+    font-family: 'BlinkMacSystemFont', 'Lucida Grande', 'Segoe UI', Ubuntu, Cantarell, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    background-color: #fff; /* To cover OSes with no default background color */
+  }
+
 input.input-time {
     border-radius: 30;
     border-color: #2196F3;
@@ -6,15 +14,18 @@ input.input-time {
     text-decoration: slategray
 }
 
+div.divider {
+    margin: 20px;
+}
+
 textarea {
     display: block;
-    background: none;
+    background: transparent;
     padding: 10px;
-    border-width: 0;
-    border-color: transparent;
+    border-color: rgba(0,0,0,.38);
+    border-radius: 7px;    
     line-height: 1.9;
     width: 100%;
     color: black;
-    transition: all 0.28 ease;
     box-shadow: none;
 }

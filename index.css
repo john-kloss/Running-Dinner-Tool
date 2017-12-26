@@ -11,11 +11,15 @@ input.input-time {
     border-color: #2196F3;
     border-width: 5px;
     text-align: center;
-    text-decoration: slategray
+    text-decoration: slategray;
 }
 
 div.divider {
     margin: 20px;
+}
+
+div.invisible {
+    display: none;  
 }
 
 textarea {

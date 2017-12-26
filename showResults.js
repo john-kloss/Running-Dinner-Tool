@@ -10,7 +10,7 @@ let times = {
     dessert: '18:00',
 }
 let texts = {
-    introText: 'Hier kommt der Plan',
+    introText: 'Hier kommt euer Plan',
     endText: 'Liebe Grüße, der Organisiator',
 }
 ipc.on('show-results', (event, arg) => {
@@ -18,139 +18,51 @@ ipc.on('show-results', (event, arg) => {
     showResults();
 })
 
-const header = ['Gruppe', 'Vorspeise', 'Hauptgericht', 'Nachspeise'];
-function showResults() {
-    const body = document.body;
-    // delete all elements in the body 
-    while (body.firstChild){
-        body.removeChild(body.firstChild)
-    } 
-    const div = document.createElement('div');
-    div.setAttribute('class', 'mui-container');
-
-    // insert text
-    const textSelect = `Wähle nun die Zeiten für Vor-, Haupt- und Nachspeise aus.\n
-        Anschließend kannst du den Text, der zum Beginn und zum Ende der Mail angezeigt werden soll, eingeben.\n
-        Die Mails werden dann automatisch für dich generiert.\n`
-    div.appendChild(document.createTextNode(textSelect))
-    
-    // create the time picker
-    const container = document.createElement('div');
-    container.setAttribute('class', 'mui-container-fluid');    
-    
-    const row = document.createElement('div');
-    row.setAttribute('class', 'mui-row');
-    const meals = ['Vorspeise: ','Hauptgericht: ', 'Nachspeise: ']
-    meals.map(meal => {
-        const time = document.createElement('div');
-        time.setAttribute('class', 'mui-col-md-4');
-        const text = document.createTextNode(meal);
-        const input = document.createElement('input');
-        input.setAttribute('type', 'time');
-        input.setAttribute('placeholder', '18:00')
-        input.setAttribute('name', meal);
-        input.addEventListener('change', (event) => {
-            switch(event.target.name){
-                case meals[0]: times.starter = event.target.value; break;
-                case meals[1]: times.main = event.target.value; break;
-                case meals[2]: times.dessert = event.target.value; break;
-            }
-            eraseMailLinks();
-            createMailLinks(groups, div);
-        });
-        time.appendChild(text);        
-        time.appendChild(input);
-        row.appendChild(time);
-    })
-    container.appendChild(row);
-    div.appendChild(container);
-    
-    const textRow = document.createElement('div');
-    textRow.setAttribute('class', 'mui-row');
-    
-    // create the text input fields
-    Object.keys(texts).map(key => {
-        let text;
-        if (key === 'introText'){
-            text = document.createTextNode('Text zu Beginn der Mail');
-        } else {
-            text = document.createTextNode('Text zum Ende der Mail');
+const timePicker = document.getElementsByClassName('meal-time');
+for (let i = 0; i < timePicker.length; i++) {
+    timePicker[i].addEventListener('change',
+        (event) => {
+            switch(event.target.id){
+                case 'starter': times.starter = event.target.value; break;
+                case 'mainCourse': times.main = event.target.value; break;
+                case 'dessert': times.dessert = event.target.value; break;
         }
-        const form = document.createElement('div');
-        form.setAttribute('widht', '100%');
-        form.setAttribute('class', 'mui-form');
-        const input = document.createElement('textarea');
-        if (key === 'introText') input.setAttribute('name', 'Text zu Beginn');
-        if (key === 'endText') input.setAttribute('name', 'Text zum Ende');
-        input.setAttribute('placeholder', texts[key]);
-        input.addEventListener('change', (event) => {
-            texts[key] = event.target.value; 
-            eraseMailLinks();
-            createMailLinks(groups, div);
-        })
-        form.appendChild(input)
-        div.appendChild(text);
-        div.appendChild(form);
-    })
+        console.log(times)
+        createMailLinks(groups);
+    });
+}
 
-    const divider = document.createElement('div');
-    divider.setAttribute('class', 'divider');
-    div.appendChild(divider);
-    const textTable = `Hier noch eine Übersicht über die Zuteilung der Teams.`;
-    div.appendChild(document.createTextNode(textTable));
+const textInputs = document.getElementsByClassName('mail-text');
+for (let i = 0; i < textInputs.length; i++) {
+    textInputs[i].addEventListener('change', (event) => {
+        texts[event.target.name] = event.target.value; 
+        createMailLinks(groups);
+    });
+}
+
+const buttonExportPlan = document.getElementById('button-export-plan');
+buttonExportPlan.addEventListener('click', () => {
+    ipc.send('export-plan');        
+})
     
-    // create a new table
-    const table = document.createElement('table');
-    table.setAttribute('class', 'mui-table')
-    
-    // create the header
-    const thead = document.createElement('thead');    
-    const tr = document.createElement('tr');
-    header.map(column => {
-        const th = document.createElement('th');
-        th.appendChild(document.createTextNode(column))
-        tr.appendChild(th);
-    })
-    thead.appendChild(tr);
+function showResults() {
     // add the table data
-    const tbody = document.createElement('tbody');        
+    const tbody = document.getElementById('table-results-tbody');        
     groups.map((group, i) => {
         tbody.appendChild(createRow(group, i));
-    })
-    table.appendChild(thead);
-    table.appendChild(tbody);
-    div.appendChild(table);
-
-    // create to button to download the table
-    const buttonExportPlan = document.createElement('button');
-    buttonExportPlan.appendChild(document.createTextNode('Download als PDF'))
-    buttonExportPlan.setAttribute('class', 'mui-btn mui-btn--primary')
-    buttonExportPlan.addEventListener('click', () => {
-        ipc.send('export-plan', table);
-    })
-    div.appendChild(buttonExportPlan);
-
-    const divider2 = document.createElement('div');
-    divider2.setAttribute('class', 'divider');
-    div.appendChild(divider2);
-    const textMailLinks = `Hier findest du die Links, mit denen du Mails an die entsprechenden Gruppen verschicken kannst.`
-    div.appendChild(document.createTextNode(textMailLinks));
+    });
 
     //append the links to send the mails
-    createMailLinks(groups, div);
-   
-    body.appendChild(div);
+    createMailLinks(groups);
 }
 
-function eraseMailLinks(){
-    mailLinkContainer = document.getElementById('mail-link-container');
-    mailLinkContainer.parentNode.removeChild(mailLinkContainer);
-}
-
-function createMailLinks(groups, div) {
-    const mailLinkContainer = document.createElement('div');
-    mailLinkContainer.setAttribute('class', 'mui-container');
-    mailLinkContainer.setAttribute('id', 'mail-link-container')
+function createMailLinks(groups) {
+    const mailLinkContainer = document.getElementById('mail-link-container');
+    // remove previously created links
+    while (mailLinkContainer.firstChild) {
+        mailLinkContainer.removeChild(mailLinkContainer.firstChild);
+    }
+    // create links for the groups
     groups.map((group,i) => {
         const a = document.createElement('a');
         a.setAttribute('class', 'mail-link')
@@ -158,12 +70,11 @@ function createMailLinks(groups, div) {
         a.addEventListener('click', function (event) {
             const mailLink = `mailto:${group.mailAddress}?subject=Running Dinner&body=${mailContent}`
             shell.openExternal(mailLink);
-        })
+        });
         a.appendChild(document.createTextNode(group.name))
         mailLinkContainer.appendChild(a);
         mailLinkContainer.appendChild(document.createElement('br'));
     })
-    div.appendChild(mailLinkContainer);
 }
 
 function createRow(group, i){
@@ -230,7 +141,7 @@ function generateMailContent(self, i) {
     }
 }
 
-// only receives two groups if you cook yourself
+// only receives two groups as arguments if you cook yourself
 function getMealString(meal, time, group1, group2){
     if (group2){
         return `${meal} um ${time} Uhr %0D%0A Bei euch mit: ${group1.name} %0D%0A

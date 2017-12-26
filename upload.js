@@ -8,12 +8,12 @@ const csv = require('fast-csv');
 const fs = require('fs');
 
 // link the example table
-const linkExample = document.getElementById('link-example')
+const linkExample = document.getElementById('link-example');
 linkExample.addEventListener('click', function (event) {
     shell.openExternal('https://docs.google.com/spreadsheets/d/1TCWv3OGkir72pjG4ONVgBd6fqk_c3p-6Rcz_IlYGams/edit#gid=0')
 })
 
-const buttonUpload = document.getElementById('button-upload')
+const buttonUpload = document.getElementById('button-upload');
 buttonUpload.addEventListener('click', () => {
     dialog.showOpenDialog({
         properties: ['openFile'],
@@ -25,6 +25,12 @@ buttonUpload.addEventListener('click', () => {
             handleUpload(files);
         }
       })
+})
+
+const buttonCreatePlan = document.getElementById('button-create-plan');
+buttonCreatePlan.addEventListener('click', () => {
+    // let the main process create the plan
+    ipc.send('imported-groups', groups);
 })
 
 let groups = [];
@@ -53,7 +59,8 @@ function handleUpload(files){
     })
     .on("end", function(){
         if (groups.length % 3 === 0){
-            createTable();            
+            createTable();  
+            document.getElementById('upload-table-container').classList.remove('invisible');          
         } else {
             ipc.send('open-error-dialog', 'Fehler beim importieren', 'Die Anzahl der Gruppen muss durch 3 teilbar sein.');
         }
@@ -61,28 +68,8 @@ function handleUpload(files){
     stream.pipe(csvStream);
 }
 
-const header = ['Teamnummer', 'Teamname', 'E-Mail Adresse',	'Postalische Adresse', 'Essbesonderheiten',	'Handynummer'];
-
 function createTable(){
-    const body = document.getElementsByTagName('body')[0];
-    const div = document.createElement('div');
-    div.setAttribute('class', 'mui-container');
-    const table = document.createElement('table');
-    //table.style.width = '100%';
-    table.setAttribute('class', 'mui-table')
-
-    // create the header
-    const thead = document.createElement('thead');
-    const tr = document.createElement('tr');
-    header.map(column => {
-        const th = document.createElement('th');
-        th.appendChild(document.createTextNode(column))
-        tr.appendChild(th);
-    })
-    thead.appendChild(tr);
-
-    // add the table data
-    const tbody = document.createElement('tbody');        
+    const tbody = document.getElementById('upload-table-tbody')    
     groups.map(group => {
         const tr = document.createElement('tr');
         Object.keys(group).map(key => {
@@ -92,19 +79,6 @@ function createTable(){
         })
         tbody.appendChild(tr);
     })
-    table.appendChild(thead);
-    table.appendChild(tbody);
-    // create the button to create the plan
-    const buttonCreatePlan = document.createElement('button');
-    buttonCreatePlan.setAttribute('class', 'mui-btn mui-btn--primary');
-    buttonCreatePlan.addEventListener('click', () => {
-        // let the main process create the plan
-        ipc.send('imported-groups', groups);
-    })
-    buttonCreatePlan.appendChild(document.createTextNode('Plan erstellen'));
-    div.appendChild(table);
-    div.appendChild(buttonCreatePlan);
-    body.appendChild(div);
 }
 
 

@@ -1,11 +1,8 @@
-const {app, BrowserWindow} = require('electron');
-const ipc = require('electron').ipcMain;
+const { app, BrowserWindow, shell, ipcMain } = require('electron');
 const path = require('path');
 const url = require('url');
 const os = require('os');
 const fs = require('fs');
-const shell = require('electron').shell;
-const dialog = require('electron').dialog;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -25,9 +22,8 @@ function createWindow () {
     protocol: 'file:',
     slashes: true
   }))
-
   // Open the DevTools.
-  //win.webContents.openDevTools()  
+  win.webContents.openDevTools()  
   
   // Emitted when the window is closed.
   win.on('closed', () => {
@@ -60,19 +56,19 @@ app.on('activate', () => {
   }
 })
 
-ipc.on('imported-groups', (event, groups) => {
+ipcMain.on('imported-groups', (event, groups) => {
   win.webContents.send('create-plan', groups);
 })
 
-ipc.on('groups-planned', (event, groups) => {
-  win.webContents.send('show-results', groups);
+ipcMain.on('groups-planned', (event, groups) => {  
+  win.send('show-results', groups);
 })
 
-ipc.on('open-error-dialog', function (event, header, message) {
+ipcMain.on('open-error-dialog', function (event, header, message) {
   dialog.showErrorBox(header, message);
 })
 
-ipc.on('export-plan', (event) => {
+ipcMain.on('export-plan', (event) => {
   const pdfPath = path.join(os.tmpdir(), 'plan.pdf')
   const win = BrowserWindow.fromWebContents(event.sender)
   win.webContents.printToPDF({}, function (error, data) {

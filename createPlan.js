@@ -2,7 +2,9 @@ const ipc = require('electron').ipcRenderer;
 const _ = require('lodash');
 
 ipc.on('create-plan', (event, groups) => {
-    createPlan(groups)
+    createPlan(groups);
+    document.getElementById('container-upload').classList.add('invisible');
+    document.getElementById('container-results').classList.remove('invisible');
 });
 
 

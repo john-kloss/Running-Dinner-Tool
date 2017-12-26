@@ -1,0 +1,51 @@
+<template class="task-template">
+  <div class="mui-container invisible" id="container-results">
+      <h1>Running Dinner Tool</h1>
+      Wähle nun die Zeiten für Vor-, Haupt- und Nachspeise aus.
+      Anschließend kannst du den Text, der zum Beginn und zum Ende der Mail angezeigt werden soll, eingeben.
+      Die Mails werden dann automatisch für dich generiert.
+      <br/>
+      <div class="mui-container-fluid">
+        <div class="mui-row">
+          <div class="mui-col-md-4">
+            Vorspeise:                   
+            <input class="meal-time" type="time" id="starter">
+          </div>
+          <div class="mui-col-md-4">
+            Hauptgericht:
+            <input class="meal-time" type="time" id="mainCourse">
+          </div>
+          <div class="mui-col-md-4">
+            Nachspeise
+            <input class="meal-time" type="time" id="dessert">
+          </div>
+        </div>
+      </div>
+      <div class="mui-form" widht="100%">
+        <textarea class="mail-text" name="introText" placeholder="Hier kommt euer Plan"></textarea>
+        <textarea class="mail-text" name="endText" placeholder="Liebe Grüße, der Organisiator"></textarea>   
+      </div>
+      <br/>
+      <h3>Hier noch eine Übersicht über die Zuteilung der Teams.</h3>
+      <table class="mui-table">
+        <thead>
+          <th>Gruppe</th>
+          <th>Vorspeise</th>
+          <th>Hauptgericht</th>
+          <th>Nachspeise</th>
+        </thead>
+        <tbody id="table-results-tbody">
+
+        </tbody>
+      </table>
+      <button class="mui-btn mui-btn--primary" id="button-export-plan">Download als PDF</button>
+      <br/>
+
+      <h3>Hier findest du die Links, mit denen du Mails an die entsprechenden Gruppen verschicken kannst.</h3>
+      <div class="mui-container" id="mail-link-container"></div>     
+    </div>
+    <script>
+      require('./showResults.js')
+    </script>
+<template class="task-template">
+            

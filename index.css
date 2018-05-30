@@ -6,10 +6,10 @@ html {
     background-color: #fff; /* To cover OSes with no default background color */
   }
 
-input.input-time {
-    border-radius: 30;
-    border-color: #2196F3;
-    border-width: 5px;
+input.meal-time {
+    border-radius: 5px;
+    border-color:rgba(0,0,0,.38);
+    border-width: 1px;
     text-align: center;
     text-decoration: slategray;
 }
@@ -32,4 +32,6 @@ textarea {
     width: 100%;
     color: black;
     box-shadow: none;
+    resize: none;
+    height: 10em; 
 }

@@ -16,14 +16,14 @@
             <input class="meal-time" type="time" id="mainCourse">
           </div>
           <div class="mui-col-md-4">
-            Nachspeise
+            Nachspeise:
             <input class="meal-time" type="time" id="dessert">
           </div>
         </div>
       </div>
       <div class="mui-form" widht="100%">
-        <textarea class="mail-text" name="introText" placeholder="Hier kommt euer Plan"></textarea>
-        <textarea class="mail-text" name="endText" placeholder="Liebe Grüße, der Organisiator"></textarea>   
+        <textarea class="mail-text" id="introText" placeholder="Hier kommt euer Plan"></textarea>
+        <textarea class="mail-text" id="endText" placeholder="Liebe Grüße, der Organisiator"></textarea>   
       </div>
       <br/>
       <h3>Hier noch eine Übersicht über die Zuteilung der Teams.</h3>
@@ -45,7 +45,7 @@
       <div class="mui-container" id="mail-link-container"></div>     
     </div>
     <script>
-      require('./showResults.js')
+      require('./js/showResults.js')
     </script>
 <template class="task-template">
             

@@ -1,83 +1,84 @@
-const { app, BrowserWindow, shell, ipcMain } = require('electron');
+const {app, BrowserWindow, shell, ipcMain} = require('electron');
+const dialog = require('electron').dialog;
 const path = require('path');
 const url = require('url');
 const os = require('os');
 const fs = require('fs');
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-let win
+let win;
 
-function createWindow () {
-  // Create the browser window.
+function createWindow() {
   win = new BrowserWindow({
-    icon: path.join( __dirname, 'dinner.png'), 
-    frame: false,
-    width: 900,
+    icon: path.join(__dirname, 'dinner.png'),
+    width: 1500,
     height: 600,
   });
-  // and load the index.html of the app.
-  win.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
-    protocol: 'file:',
-    slashes: true
-  }))
-  // Open the DevTools.
-  win.webContents.openDevTools()  
-  
-  // Emitted when the window is closed.
+  win.loadURL(
+    url.format({
+      pathname: path.join(__dirname, 'index.html'),
+      protocol: 'file:',
+      slashes: true,
+    })
+  );
+  win.webContents.openDevTools();
+  win.maximize();
+
   win.on('closed', () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    win = null
-  })
+    win = null;
+  });
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
 
-// Quit when all windows are closed.
 app.on('window-all-closed', () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
-    app.quit()
+    app.quit();
   }
-})
+});
 
 app.on('activate', () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (win === null) {
-    createWindow()
+    createWindow();
   }
-})
+});
 
+/**
+ * User functions
+ */
+
+// groups were successfully imported and the plan can be created
 ipcMain.on('imported-groups', (event, groups) => {
   win.webContents.send('create-plan', groups);
-})
+});
 
-ipcMain.on('groups-planned', (event, groups) => {  
+// the plan was created and we can show the results
+ipcMain.on('groups-planned', (event, groups) => {
   win.send('show-results', groups);
-})
+});
 
-ipcMain.on('open-error-dialog', function (event, header, message) {
+ipcMain.on('open-error-dialog', (event, header, message) => {
   dialog.showErrorBox(header, message);
-})
+});
+
+ipcMain.on('open-message-dialog', (event, title, message) => {
+  dialog.showMessageBox(null, {
+    type: 'info',
+    buttons: ['OK'],
+    title,
+    message,
+  });
+});
 
 ipcMain.on('export-plan', (event) => {
-  const pdfPath = path.join(os.tmpdir(), 'plan.pdf')
-  const win = BrowserWindow.fromWebContents(event.sender)
-  win.webContents.printToPDF({}, function (error, data) {
-    if (error) throw error
-    fs.writeFile(pdfPath, data, function (error) {
+  const pdfPath = path.join(os.tmpdir(), 'plan.pdf');
+  const win = BrowserWindow.fromWebContents(event.sender);
+  win.webContents.printToPDF({}, function(error, data) {
+    if (error) throw error;
+    fs.writeFile(pdfPath, data, function(error) {
       if (error) {
-        throw error
+        throw error;
       }
-      shell.openExternal('file://' + pdfPath)
-    })
-  })
-})
+      shell.openExternal('file://' + pdfPath);
+    });
+  });
+});

@@ -9,7 +9,7 @@ const fs = require('fs');
 const linkExample = document.getElementById('link-example');
 linkExample.addEventListener('click', function(event) {
   shell.openExternal(
-    'https://docs.google.com/spreadsheets/d/1TCWv3OGkir72pjG4ONVgBd6fqk_c3p-6Rcz_IlYGams/edit#gid=0'
+    'https://docs.google.com/forms/d/1vvO8NXG78MsO5e4sOGtwEkixkuydAficClXSWkl3OyU/edit?usp=sharing'
   );
 });
 
@@ -42,27 +42,17 @@ function handleUpload(files) {
   const stream = fs.createReadStream(files[0]);
   let error;
   let csvStream = csv()
-    .on('data', function(group) {
+    .on('data', (group) => {
       // check if everything is correct
       if (group.length !== 6) {
         error = [
           'Fehler beim importieren',
-          'Bitte entferne alle Kommas aus deiner CSV-Datei.',
+          'Bitte kontrolliere dein CSV-Datei',
         ];
       }
-      if (
-        group[1].includes('&') ||
-        group[3].includes('&') ||
-        group[4].includes('&')
-      ) {
-        error = [
-          'Fehler beim importieren',
-          'Bitte entferne die &-Zeichen aus der Tabelle',
-        ];
-      }
-      if (group[0] === 'Teamnummer') return;
+      if (group[0] === 'Timestamp') return;
       groups.push({
-        id: parseInt(group[0]),
+        id: 0,
         name: group[1],
         mailAddress: group[2],
         postalAddress: group[3],
@@ -94,7 +84,8 @@ function handleUpload(files) {
 function createTable() {
   const tbody = document.getElementById('upload-table-tbody');
   while (tbody.firstChild) tbody.removeChild(tbody.firstChild);
-  groups.map((group) => {
+  groups.map((group, i) => {
+    group.id = i + 1;
     const tr = document.createElement('tr');
     Object.keys(group).map((key) => {
       const td = document.createElement('td');

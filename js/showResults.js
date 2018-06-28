@@ -37,6 +37,10 @@ for (let i = 0; i < timePicker.length; i++) {
   });
 }
 
+/**
+ * TEXT INPUT
+ */
+
 const textInputs = document.getElementsByClassName('mail-text');
 for (let i = 0; i < textInputs.length; i++) {
   textInputs[i].addEventListener('change', (event) => {
@@ -49,6 +53,10 @@ const buttonExportPlan = document.getElementById('button-export-plan');
 buttonExportPlan.addEventListener('click', () => {
   ipc.send('export-plan');
 });
+
+/**
+ * MAIN FUNCTION
+ */
 
 function showResults() {
   // add the table data
@@ -72,6 +80,7 @@ function createMailLinks(groups) {
     const a = document.createElement('a');
     a.setAttribute('class', 'mail-link');
     const mailContent = generateMailContent(group, i);
+    console.log(mailContent);
     a.addEventListener('click', function(event) {
       const mailLink = `mailto:${
         group.mailAddress
@@ -158,36 +167,30 @@ function generateMailContent(self, i) {
     if (otherGroups[i + 1].meal === meal) {
       mealString = getMealString(meal, time, otherGroups[i + 1]);
     }
-    bodyString = bodyString + mealString;
+    bodyString = bodyString + mealString.replace(',', '%2C');
   }
   bodyString =
     bodyString +
     texts.endText.replace(/(?:\r\n|\r|\n)/g, '<br />').replace(',', '%2C');
-  if (bodyString.includes('&')) {
-    ipc.send(
-      'open-error-dialog',
-      'Fehler beim erstellen der Links',
-      'Bitte entferne die &-Zeichen aus deiner Nachricht.'
-    );
-  } else {
-    return bodyString;
-  }
+  return bodyString.replace('&', 'und');
 }
 
 // only receives two groups as arguments if you cook yourself
 function getMealString(meal, time, group1, group2) {
   if (group2) {
-    return `${meal} um ${time} Uhr %0D%0A Bei euch mit: ${group1.name} %0D%0A
+    return `<b>${meal}</b> um ${time} Uhr %0D%0A Bei euch mit: '${
+      group1.name
+    }' %0D%0A
             Tel: ${group1.tel} %0D%0A Essbesonderheiten: ${
       group1.eatingHabits
     } %0D%0A%0D%0A
-            und ${group2.name}%0D%0A
+            und %0D%0A '${group2.name}'%0D%0A
             Tel: ${group2.tel} %0D%0A Essbesonderheiten: ${
       group2.eatingHabits
     } %0D%0A%0D%0A
             `;
   } else {
-    return `${meal} um ${time} Uhr %0D%0A Bei: ${group1.name} %0D%0A
+    return `<b>${meal}</b> um ${time} Uhr %0D%0A Bei: '${group1.name}' %0D%0A
         Location: ${group1.postalAddress} %0D%0A Tel: ${group1.tel} %0D%0A%0D%0A
         `;
   }

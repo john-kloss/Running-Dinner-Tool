@@ -14,10 +14,17 @@
     "eslint-config-google": "^0.9.1"
   },
   "build": {
-    "appId": "running.dinner.tool"
+    "appId": "running.dinner.tool",
+    "win": {
+      "target": "portable",
+      "icon": "build/dinner.png"
+    },
+    "mac": {
+      "target": "default"
+    }
   },
   "scripts": {
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "electron-builder --mac"
   }
 }

@@ -5,11 +5,6 @@ ipc.on('create-plan', (event, groups) => {
   createPlan(groups);
   document.getElementById('container-upload').classList.add('invisible');
   document.getElementById('container-results').classList.remove('invisible');
-  ipc.send(
-    'open-message-dialog',
-    'Fertig',
-    'Dein Plan wurde erfolgreich erstellt.'
-  );
 });
 
 function getGroup(n, a, b) {

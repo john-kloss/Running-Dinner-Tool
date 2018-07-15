@@ -5,6 +5,8 @@ const {dialog} = require('electron').remote;
 const csv = require('fast-csv');
 const fs = require('fs');
 
+const regex = /[^a-zA-Z\d?!\s@.äüöÄÖÜ]/g;
+
 // link the example table
 const linkExample = document.getElementById('link-example');
 linkExample.addEventListener('click', function(event) {
@@ -41,6 +43,7 @@ buttonCreatePlan.addEventListener('click', () => {
 function handleUpload(files) {
   const stream = fs.createReadStream(files[0]);
   let error;
+  let id = 0;
   let csvStream = csv()
     .on('data', (group) => {
       // check if everything is correct
@@ -51,20 +54,22 @@ function handleUpload(files) {
         ];
       }
       if (group[0] === 'Timestamp') return;
+
       groups.push({
-        id: 0,
-        name: group[1],
-        mailAddress: group[2],
-        postalAddress: group[3],
-        eatingHabits: group[4],
+        mailAddress: group[1],
+        name: group[2].replace(regex, ''),
+        postalAddress: group[3].replace(regex, ''),
+        eatingHabits: group[4].replace(regex, ''),
         tel: group[5],
       });
+
     })
     .on('end', function() {
       // display the error
       if (error) {
         ipc.send('open-error-dialog', error[0], error[1]);
       } else if (groups.length % 3 === 0) {
+        console.log(groups);
         createTable();
         document
           .getElementById('upload-table-container')

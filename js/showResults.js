@@ -80,7 +80,6 @@ function createMailLinks(groups) {
     const a = document.createElement('a');
     a.setAttribute('class', 'mail-link');
     const mailContent = generateMailContent(group, i);
-    console.log(mailContent);
     a.addEventListener('click', function(event) {
       const mailLink = `mailto:${
         group.mailAddress

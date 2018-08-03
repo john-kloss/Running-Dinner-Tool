@@ -5,13 +5,26 @@
  },
  "version": "1.2.0",
  "dependencies": {
-  "eslint": "^4.14.0",
+  "@material-ui/core": "^1.4.2",
+  "@material-ui/icons": "^2.0.0",
+  "babel-preset-react": "^6.5.0",
+  "babelify": "^7.2.0",
+  "electron-reload": "^1.2.5",
+  "eslint": "^5.2.0",
   "fast-csv": "^2.4.1",
   "lodash": "^4.17.4",
+  "material-datetime-picker": "^2.4.0",
+  "material-ui-time-picker": "^1.0.0",
   "materialize-css": "^0.100.2",
-  "moment": "^2.20.1"
+  "moment": "^2.20.1",
+  "papaparse": "^4.5.1",
+  "react": "^16.4.1",
+  "react-autocomplete": "1.8.1",
+  "react-dom": "^16.4.1",
+  "watchify": "^3.11.0"
  },
  "devDependencies": {
+  "babel-preset-es2015": "^6.24.1",
   "electron": "2.0.2",
   "electron-builder": "^20.15.1",
   "eslint-config-google": "^0.9.1"
@@ -36,6 +49,7 @@
   "pack": "electron-builder --dir",
   "mac": "electron-builder --mac",
   "win": "electron-builder --win",
-  "linux": "electron-builder --linux"
+  "linux": "electron-builder --linux",
+  "watch": "watchify app/app.js -t babelify -o js/bundle.js --debug --verbose"
  }
 }

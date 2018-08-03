@@ -6,6 +6,13 @@ const csv = require('fast-csv');
 const fs = require('fs');
 
 const regex = /[^a-zA-Z\d?!\s@.äüöÄÖÜ]/g;
+const defaultGroup = {
+  mailAddress: 'tba',
+  name: 'tba',
+  postalAddress: 'tba',
+  eatingHabits: 'tba',
+  tel: 'tba',
+};
 
 // link the example table
 const linkExample = document.getElementById('link-example');
@@ -43,15 +50,11 @@ buttonCreatePlan.addEventListener('click', () => {
 function handleUpload(files) {
   const stream = fs.createReadStream(files[0]);
   let error;
-  let id = 0;
   let csvStream = csv()
     .on('data', (group) => {
       // check if everything is correct
       if (group.length !== 6) {
-        error = [
-          'Fehler beim importieren',
-          'Bitte kontrolliere dein CSV-Datei',
-        ];
+        error = true;
       }
       if (group[0] === 'Timestamp') return;
 
@@ -62,26 +65,34 @@ function handleUpload(files) {
         eatingHabits: group[4].replace(regex, ''),
         tel: group[5],
       });
-
     })
     .on('end', function() {
       // display the error
       if (error) {
-        ipc.send('open-error-dialog', error[0], error[1]);
-      } else if (groups.length % 3 === 0) {
-        console.log(groups);
-        createTable();
-        document
-          .getElementById('upload-table-container')
-          .classList.remove('invisible');
-      } else {
         ipc.send(
           'open-error-dialog',
           'Fehler beim importieren',
-          'Die Anzahl der Gruppen muss durch 3 teilbar sein. Es sind nur ' +
-            groups.length
+          'Bitte kontrolliere deine CSV-Datei'
         );
       }
+      // insert missing groups with default group
+      if (groups.length % 3 !== 0) {
+        ipc.send(
+          'open-error-dialog',
+          'Achtung die Anzahl deiner Gruppen ist nicht durch 3 teilbar.',
+          'Die fehlende(n) Gruppe(n) wurde(n) hinzugefügt.'
+        );
+        groups.push(defaultGroup);
+        // in case two groups are missing
+        if (groups.length % 3 !== 0) {
+          groups.push(defaultGroup);
+        }
+      }
+      console.log(groups);
+      createTable();
+      document
+        .getElementById('upload-table-container')
+        .classList.remove('invisible');
     });
   stream.pipe(csvStream);
 }

@@ -151,7 +151,7 @@ function generateMailContent(self, i) {
         break;
     }
     // get the meal string depending on who has to cook
-    let mealString;
+    let mealString = '';
     if (self.meal === meal) {
       mealString = getMealString(
         meal,

@@ -7,21 +7,17 @@ class TimePicker extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      times: {
-        starter: '',
-        mainCourse: '',
-        dessert: '',
-      },
+      times: ['18:00', '18:00', '18:00'],
     };
   }
-  onTimeChange(time, meal) {
+  onTimeChange(time, i) {
     const newTimes = this.state.times;
-    newTimes[meal] = time;
-    console.log(newTimes);
+    newTimes[i] = time.toTimeString().substring(0, 5);
     this.setState({ times: newTimes });
     this.props.onTimeChange(newTimes);
   }
   render() {
+    const courses = ['Vorspeise', 'Hauptspeise', 'Nachspeise'];
     return (
       <Paper>
         <Grid
@@ -30,13 +26,14 @@ class TimePicker extends React.Component {
           style={{ flexGrow: 1, display: 'flex' }}
           spacing={16}
         >
-          {['starter', 'mainCourse', 'dessert'].map((course) => (
-            <Grid key={course} item>
-              {course}:
+          {[0, 1, 2].map((i) => (
+            <Grid key={i} item>
+              {courses[i]}:
               {'  '}
               <TimeInput
                 autoOk
-                onChange={(time) => this.onTimeChange(time, course)}
+                defaultValue={new Date('December 17, 1995 18:00:00')}
+                onChange={(time) => this.onTimeChange(time, i)}
               />
             </Grid>
           ))}

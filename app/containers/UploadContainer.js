@@ -1,5 +1,5 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
+import { Typography } from '@material-ui/core';
 
 class UploadContainer extends React.Component {
   render() {
@@ -10,7 +10,8 @@ class UploadContainer extends React.Component {
           Google Forms sammeln. Eine Vorlage dafür findest du{' '}
           <a href="" id="link-example">
             hier
-          </a>.
+          </a>
+          .
         </Typography>
         <Typography variant="subheading" gutterBottom paragraph>
           Bitte editiere das Original nicht. Logge dich mit einem Google-Account

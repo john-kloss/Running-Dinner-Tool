@@ -6,15 +6,19 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
 class ResultsTable extends React.Component {
+  mapCell(group, i) {
+    const postfix = i !== 2 ? ' / ' : '';
+    return group.name + postfix;
+  }
+
   render() {
     const plan = this.props.plan;
     let data = [];
     for (let i = 0; i < 3; i++) {
       data.push([plan.starter[i], plan.mainCourse[i], plan.dessert[i]]);
     }
-    console.log(data);
     return (
-      <Table>
+      <Table style={{ tableLayout: 'fixed' }}>
         <TableHead>
           <TableRow>
             <TableCell>Vorspeisen</TableCell>
@@ -27,13 +31,13 @@ class ResultsTable extends React.Component {
             return (
               <TableRow key={'ResultTableRow' + i}>
                 <TableCell>
-                  {dataForRow[0].map((group) => group.name + '\n')}
+                  {dataForRow[0].map((group, i) => this.mapCell(group, i))}
                 </TableCell>
                 <TableCell>
-                  {dataForRow[1].map((group) => group.name)}
+                  {dataForRow[1].map((group,i) => this.mapCell(group, i))}
                 </TableCell>
                 <TableCell>
-                  {dataForRow[2].map((group) => group.name)}
+                  {dataForRow[2].map((group,i) => this.mapCell(group, i))}
                 </TableCell>
               </TableRow>
             );

@@ -1,17 +1,21 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import { TimePicker, ResultsTable, TextInput, MailLinks } from '../components';
+import Button from '@material-ui/core/Button';
+import { TimePicker, ResultsTable, TextInput } from '../components';
 
 class PlanContainer extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      times: undefined,
-      introText: '',
-      endText: '',
+      plan: {},
     };
   }
 
+  componentWillMount() {
+    const plan = this.createPlan();
+    this.props.onPlanChange(plan);
+    this.setState({ plan });
+  }
   /**
    * This function creates the plan. It contains the id of the teams which eat which meal
    */
@@ -51,7 +55,8 @@ class PlanContainer extends React.Component {
     return plan;
   }
   render() {
-    const plan = this.createPlan();
+    const { plan } = this.state;
+    //TODO : make time and texts persistent
     return (
       <div>
         <Typography
@@ -65,21 +70,19 @@ class PlanContainer extends React.Component {
           werden soll, eingeben. Die Mails werden dann automatisch für dich
           generiert.
         </Typography>
-        <TimePicker onTimeChange={(times) => this.setState({ times })} />
-        <TextInput
-          onUpdateText={(introText, endText) =>
-            this.setState({ introText, endText })
-          }
-        />
+        <TimePicker onTimeChange={(times) => this.props.onTimeChange(times)} />
+        <TextInput onTextChange={(texts) => this.props.onTextChange(texts)} />
         <Typography variant="subheading" gutterBottom paragraph>
           Hier noch eine Übersicht über die Zuteilung der Teams.
         </Typography>
         <ResultsTable plan={plan} groups={this.props.groups} />
-        <Typography variant="subheading" gutterBottom paragraph>
-          Hier findest du die Links, mit denen du Mails an die entsprechenden
-          Gruppen verschicken kannst.
-        </Typography>
-        <MailLinks plan={plan} groups={this.props.groups} />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => this.props.handleNext()}
+        >
+          Weiter
+        </Button>
       </div>
     );
   }

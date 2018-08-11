@@ -5,3 +5,4 @@ export { default as TimePicker } from './TimePicker';
 export { default as ResultsTable } from './ResultsTable';
 export { default as TextInput } from './TextInput';
 export { default as MailLinks } from './MailLinks';
+export { default as AlertDialog } from './AlertDialog';

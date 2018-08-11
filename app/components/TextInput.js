@@ -6,9 +6,15 @@ class TextInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      introText: '',
-      endText: '',
+      texts: ['', ''],
     };
+  }
+
+  onTextChange(text, i) {
+    const newTexts = this.state.texts;
+    newTexts[i] = text;
+    this.setState({ texts: newTexts });
+    this.props.onTextChange(newTexts);
   }
 
   render() {
@@ -27,7 +33,7 @@ class TextInput extends React.Component {
           multiline
           rows="4"
           margin="normal"
-          onChange={(event) => this.setState({ introText: event.target.value })}
+          onChange={(event) => this.onTextChange(event.target.value, 0)}
         />
         <TextField
           style={{ flex: 1, marginLeft: 15, marginRight: 15 }}
@@ -35,7 +41,7 @@ class TextInput extends React.Component {
           multiline
           rows="4"
           margin="normal"
-          onChange={(event) => this.setState({ endText: event.target.value })}
+          onChange={(event) => this.onTextChange(event.target.value, 1)}
         />
       </Paper>
     );

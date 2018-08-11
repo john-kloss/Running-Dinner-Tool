@@ -5,6 +5,18 @@ import PapaParse from 'papaparse';
 
 const regex = /[^a-zA-Z\d?!\s@.äüöÄÖÜ]/g;
 
+class defaultGroup {
+  constructor() {
+    return {
+      mailAddress: 'tba',
+      name: 'tba',
+      postalAddress: 'tba',
+      eatingHabits: 'tba',
+      tel: 'tba',
+    };
+  }
+}
+
 class UploadButton extends React.Component {
   constructor(props) {
     super(props);
@@ -31,6 +43,14 @@ class UploadButton extends React.Component {
         tel: group[5],
       });
     });
+
+    // in case we don't have enough groups, add default groups
+    while (groups.length % 3 !== 0) {
+      const group = new defaultGroup();
+      group.id = groups.length;
+      groups.push(group);
+      this.props.showAlertDialog();
+    }
     this.props.onUpload(groups);
   }
 

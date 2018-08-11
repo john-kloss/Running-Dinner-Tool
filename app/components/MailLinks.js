@@ -1,6 +1,7 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
 class MailLinks extends React.Component {
   constructor(props) {
@@ -10,30 +11,50 @@ class MailLinks extends React.Component {
     };
   }
   generateMailContent(group, plan) {
-    //TODO: replace things??
-    let content = `Hallo ${group.name}, \n ${this.props.introText} `;
     const meals = ['starter', 'mainCourse', 'dessert'];
+    const mealsDE = ['Vorspeise', 'Hauptgericht', 'Nachspeise'];
+    const times = this.props.times;
+    // add the beginning text
+    let content = `Hallo ${group.name} \n ${this.props.texts[0]} %0D%0A%0D%0A `;
     // get the groups eating together
     const mealGroups = meals.map((meal) => {
       return plan[meal].filter((g) => g.find((a) => a.id === group.id))[0];
     });
+
+    // iterate of the three meals
     for (let i = 0; i < 3; i++) {
+      // if the meal is at your place
       if (group.id % 3 === i) {
-        //
         const eatingWithYou = mealGroups[i].filter((g) => g.id !== group.id);
-        console.log(eatingWithYou);
         content =
           content +
-          meals[i] +
-          ' Bei euch mit' +
-          eatingWithYou[0].name +
-          ' und ' +
-          eatingWithYou[1].name;
+          `<b>${mealsDE[i]}</b> um ${times[i]} Uhr 
+           Bei euch mit:
+          '${eatingWithYou[0].name}'
+              Tel: ${eatingWithYou[0].tel}
+              Essbesonderheiten: ${eatingWithYou[0].eatingHabits} %0D%0A
+          und %0D%0A '${eatingWithYou[1].name}'
+              Tel: ${eatingWithYou[1].tel}
+              Essbesonderheiten: ${eatingWithYou[1].eatingHabits} %0D%0A
+          `;
       } else {
-        content = content + meals[i] + ' nicht bei euch '; //+ mealGroups[i];
+        // if the meal is at someone else's place
+        const preparingTheMeal = mealGroups[i].filter((g) => g.id % 3 === i)[0];
+        content =
+          content +
+          `<b>${mealsDE[i]}</b> um ${times[i]} Uhr
+          Bei: '${preparingTheMeal.name}'
+          Location: ${preparingTheMeal.postalAddress} 
+          Tel: ${preparingTheMeal.tel} %0D%0A
+          `;
       }
     }
-    console.log(content);
+    // add the end text
+    content += this.props.texts[1].replace(',', '%2C');
+    content = content
+      .replace(/(?:\r\n|\r|\n)/g, '%0D%0A')
+      .replace(',', '%2C')
+      .replace('&', 'und');
     return content;
   }
   render() {
@@ -41,26 +62,35 @@ class MailLinks extends React.Component {
 
     return (
       <Paper>
-        <Grid container spacing={24}>
+        <Typography
+          variant="subheading"
+          style={{ marginTop: 30 }}
+          gutterBottom
+          paragraph
+        >
+          Hier findest du die Links, mit denen du Mails an die entsprechenden
+          Gruppen verschicken kannst.
+        </Typography>
+        <Grid container spacing={24} justify="center">
           {groups.map((group) => {
             const mailContent = this.generateMailContent(group, plan);
             return (
-              <div id={group.id}>
-                <Grid item xs={6}>
-                  <Paper>
-                    <a
-                      href={`mailto:'${
-                        group.mailAddress
-                      }?subject=Running Dinner&body=${mailContent}`}
-                    >
-                      {group.name}
-                    </a>
-                  </Paper>
-                </Grid>
-                {/* <Grid item xs={6}>
-                  <Paper>xs=6</Paper>
-                </Grid> */}
-              </div>
+              <Grid
+                item
+                xs={3}
+                style={{
+                  padding: 10,
+                  textAlign: 'center',
+                }}
+              >
+                <a
+                  href={`mailto:${
+                    group.mailAddress
+                  }?subject=Running Dinner&body=${mailContent}`}
+                >
+                  {group.name}
+                </a>
+              </Grid>
             );
           })}
         </Grid>

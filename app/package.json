@@ -1,0 +1,75 @@
+{
+  "name": "running-dinner-tool",
+  "author": {
+    "name": "Jonathan Kloss"
+  },
+  "version": "2.0.0",
+  "homepage": "./",
+  "main": "electron.js",
+  "dependencies": {
+    "@material-ui/core": "^1.4.2",
+    "@material-ui/icons": "^2.0.0",
+    "babel-preset-react": "^6.5.0",
+    "babelify": "^7.2.0",
+    "concurrently": "^4.0.1",
+    "electron-reload": "^1.2.5",
+    "electron-webpack": "^2.3.0",
+    "eslint": "^5.2.0",
+    "fast-csv": "^2.4.1",
+    "lodash": "^4.17.4",
+    "material-datetime-picker": "^2.4.0",
+    "material-ui-time-picker": "^1.0.0",
+    "materialize-css": "^0.100.2",
+    "moment": "^2.20.1",
+    "papaparse": "^4.5.1",
+    "react": "^16.4.1",
+    "react-autocomplete": "1.8.1",
+    "react-dom": "^16.4.1",
+    "react-scripts": "^1.1.5",
+    "wait-on": "^2.1.0",
+    "watchify": "^3.11.0"
+  },
+  "devDependencies": {
+    "babel-preset-es2015": "^6.24.1",
+    "electron": "^2.0.2",
+    "electron-builder": "^20.28.3",
+    "eslint-config-google": "^0.9.1"
+  },
+  "build": {
+    "appId": "running.dinner.tool",
+    "productName": "Running Dinner Tool",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "win": {
+      "target": "portable",
+      "icon": "assets/dinner.ico"
+    },
+    "mac": {
+      "target": "default",
+      "icon": "assets/dinner.icns"
+    },
+    "linux": {
+      "target": "default",
+      "icon": "assets/1024x1024.png"
+    }
+  },
+  "scripts": {
+    "react-start": "react-scripts start",
+    "react-build": "react-scripts build",
+    "dist": "npx build --x64 --linux --c.extraMetadata.main=build/electron.js -p always",
+    "pack": "electron-builder --dir",
+    "mac": "electron-builder --mac",
+    "win": "electron-builder --win",
+    "linux": "electron-builder --linux",
+    "watch": "watchify app/src/app.js -t babelify -o app/src/js/bundle.js --debug --verbose",
+    "electron-build": "electron-builder",
+    "build": "npm run react-build && npm run win",
+    "electron-dev": "concurrently \"BROWSER=none npm run react-start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-pack": "build -c.main=build/electron.js"
+  }
+}

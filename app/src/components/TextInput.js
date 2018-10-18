@@ -3,17 +3,10 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 
 class TextInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      texts: ['', ''],
-    };
-  }
-
+ 
   onTextChange(text, i) {
-    const newTexts = this.state.texts;
+    const newTexts = this.props.texts;
     newTexts[i] = text;
-    this.setState({ texts: newTexts });
     this.props.onTextChange(newTexts);
   }
 
@@ -33,6 +26,7 @@ class TextInput extends React.Component {
           multiline
           rows="10"
           margin="normal"
+          defaultValue={this.props.texts[0]}
           onChange={(event) => this.onTextChange(event.target.value, 0)}
         />
         <TextField
@@ -41,6 +35,7 @@ class TextInput extends React.Component {
           multiline
           rows="10"
           margin="normal"
+          defaultValue={this.props.texts[1]}
           onChange={(event) => this.onTextChange(event.target.value, 1)}
         />
       </Paper>

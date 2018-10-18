@@ -7,7 +7,7 @@ require('electron-reload')(__dirname + '/js');
 
 function createWindow() {
   win = new BrowserWindow({
-    icon: path.join(__dirname, '/assets/1024x1024.png'),
+    icon: path.join(__dirname, '../assets/1024x1024.png'),
     width: 1500,
     height: 600,
   });

@@ -70,8 +70,14 @@ class PlanContainer extends React.Component {
           werden soll, eingeben. Die Mails werden dann automatisch für dich
           generiert.
         </Typography>
-        <TimePicker onTimeChange={(times) => this.props.onTimeChange(times)} />
-        <TextInput onTextChange={(texts) => this.props.onTextChange(texts)} />
+        <TimePicker
+          onTimeChange={(times) => this.props.onTimeChange(times)}
+          times={this.props.times}
+        />
+        <TextInput
+          onTextChange={(texts) => this.props.onTextChange(texts)}
+          texts={this.props.texts}
+        />
         <Typography variant="subheading" gutterBottom paragraph>
           Hier noch eine Übersicht über die Zuteilung der Teams.
         </Typography>

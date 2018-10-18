@@ -3,7 +3,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Button from '@material-ui/core/Button';
 import PapaParse from 'papaparse';
 
-const regex = /[^a-zA-Z\d?!\s@.äüöÄÖÜ]/g;
+const regex = /[^a-zA-Z\d?!\s@.äüöÄÖÜß]/g;
 
 class defaultGroup {
   constructor() {
@@ -32,7 +32,8 @@ class UploadButton extends React.Component {
       if (group.length !== 6) {
         let error = true;
       }
-      if (group[0] === 'Timestamp') return;
+      if (i === 0) return;
+      if (group[0] === '') return;
 
       groups.push({
         id: i - 1,

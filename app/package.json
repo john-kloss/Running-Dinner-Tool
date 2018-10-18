@@ -3,9 +3,8 @@
   "author": {
     "name": "Jonathan Kloss"
   },
-  "version": "2.0.0",
+  "version": "2.1.0",
   "homepage": "./",
-  "main": "electron.js",
   "dependencies": {
     "@material-ui/core": "^1.4.2",
     "@material-ui/icons": "^2.0.0",
@@ -59,17 +58,12 @@
     }
   },
   "scripts": {
-    "react-start": "react-scripts start",
+    "react-start": "react-scripts start ./src",
     "react-build": "react-scripts build",
-    "dist": "npx build --x64 --linux --c.extraMetadata.main=build/electron.js -p always",
-    "pack": "electron-builder --dir",
     "mac": "electron-builder --mac",
     "win": "electron-builder --win",
     "linux": "electron-builder --linux",
-    "watch": "watchify app/src/app.js -t babelify -o app/src/js/bundle.js --debug --verbose",
-    "electron-build": "electron-builder",
-    "build": "npm run react-build && npm run win",
-    "electron-dev": "concurrently \"BROWSER=none npm run react-start\" \"wait-on http://localhost:3000 && electron .\"",
-    "electron-pack": "build -c.main=build/electron.js"
+    "watch": "watchify src/app.js -t babelify -o src/js/bundle.js --debug --verbose",
+    "build": "npm run react-build && npm run linux && npm run win"
   }
 }

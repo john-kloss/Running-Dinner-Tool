@@ -50,12 +50,12 @@ class MailLinks extends React.Component {
       }
     }
     // add the end text
-    content += this.props.texts[1].replace(',', '%2C');
-    content = content
+    content += this.props.texts[1];
+
+    return content
       .replace(/(?:\r\n|\r|\n)/g, '%0D%0A')
-      .replace(',', '%2C')
-      .replace('&', 'und');
-    return content;
+      .replace(/,/g, '%2C')
+      .replace(/&/g, 'und');
   }
   render() {
     const { plan, groups } = this.props;

@@ -79,6 +79,8 @@ class AppContainer extends React.Component {
             onTimeChange={(times) => this.setState({ times })}
             onTextChange={(texts) => this.setState({ texts })}
             handleNext={() => this.handleNext()}
+            times={this.state.times}
+            texts={this.state.texts}
           />
         );
       case 3:

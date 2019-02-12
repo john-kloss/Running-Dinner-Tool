@@ -1,18 +1,18 @@
-import React from 'react';
-import Grow from '@material-ui/core/Grow';
-import { UploadContainer, PlanContainer } from './index';
+import React from "react";
+import Grow from "@material-ui/core/Grow";
+import { UploadContainer, PlanContainer } from "./index";
 import {
   UploadButton,
   PaperSheet,
   TeamTable,
   MailLinks,
-  AlertDialog,
-} from '../components';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import StepContent from '@material-ui/core/StepContent';
-import Button from '@material-ui/core/Button';
+  AlertDialog
+} from "../components";
+import Stepper from "@material-ui/core/Stepper";
+import Step from "@material-ui/core/Step";
+import StepLabel from "@material-ui/core/StepLabel";
+import StepContent from "@material-ui/core/StepContent";
+import Button from "@material-ui/core/Button";
 
 class AppContainer extends React.Component {
   constructor(props) {
@@ -20,29 +20,29 @@ class AppContainer extends React.Component {
     this.state = {
       groups: [],
       activeStep: 0,
-      times: ['18:00', '18:00', '18:00'],
-      texts: ['', ''],
+      times: ["18:00", "18:00", "18:00"],
+      texts: ["", ""],
       plan: {},
-      showAlertDialog: false,
+      showAlertDialog: false
     };
   }
   handleNext() {
-    this.setState((state) => ({
-      activeStep: state.activeStep + 1,
+    this.setState(state => ({
+      activeStep: state.activeStep + 1
     }));
   }
 
   handleBack() {
-    this.setState((state) => ({
-      activeStep: state.activeStep - 1,
+    this.setState(state => ({
+      activeStep: state.activeStep - 1
     }));
   }
   getSteps() {
     return [
-      'Vorbereitung',
-      'Plan generieren',
-      'Details hinzufügen',
-      'Mails senden',
+      "Vorbereitung",
+      "Plan generieren",
+      "Details hinzufügen",
+      "Mails senden"
     ];
   }
   getStepContent(step) {
@@ -53,7 +53,7 @@ class AppContainer extends React.Component {
             <UploadContainer />
             <UploadButton
               showAlertDialog={() => this.setState({ showAlertDialog: true })}
-              onUpload={(groups) => {
+              onUpload={groups => {
                 this.setState({ groups });
                 this.handleNext();
               }}
@@ -75,9 +75,9 @@ class AppContainer extends React.Component {
         return (
           <PlanContainer
             groups={this.state.groups}
-            onPlanChange={(plan) => this.setState({ plan })}
-            onTimeChange={(times) => this.setState({ times })}
-            onTextChange={(texts) => this.setState({ texts })}
+            onPlanChange={plan => this.setState({ plan })}
+            onTimeChange={times => this.setState({ times })}
+            onTextChange={texts => this.setState({ texts })}
             handleNext={() => this.handleNext()}
             times={this.state.times}
             texts={this.state.texts}
@@ -93,7 +93,7 @@ class AppContainer extends React.Component {
           />
         );
       default:
-        return 'Unknown step';
+        return "Unknown step";
     }
   }
 
@@ -102,7 +102,7 @@ class AppContainer extends React.Component {
     const { activeStep } = this.state;
 
     return (
-      <PaperSheet headline={'Running Dinner Tool'}>
+      <PaperSheet headline={"Running Dinner Tool"}>
         <AlertDialog
           open={this.state.showAlertDialog}
           title="Zu wenige Gruppen"

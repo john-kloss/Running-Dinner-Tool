@@ -3,8 +3,13 @@
   "author": {
     "name": "Jonathan Kloss"
   },
+  "description": "Running Dinner Tool",
+  "repository": {
+    "url": "github.com/john-kloss/rudi"
+  },
   "version": "2.1.0",
   "homepage": "./",
+  "main": "./public/index.js",
   "dependencies": {
     "@material-ui/core": "^1.4.2",
     "@material-ui/icons": "^2.0.0",
@@ -30,13 +35,20 @@
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.24.1",
-    "electron": "^2.0.2",
+    "electron": "^4.0.4",
     "electron-builder": "^20.28.3",
     "eslint-config-google": "^0.9.1"
   },
   "build": {
     "appId": "running.dinner.tool",
     "productName": "Running Dinner Tool",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "john-kloss",
+        "repo": "rudi"
+      }
+    ],
     "files": [
       "build/**/*",
       "node_modules/**/*"
@@ -60,10 +72,11 @@
   "scripts": {
     "react-start": "react-scripts start ./src",
     "react-build": "react-scripts build",
+    "publish": "build --linux -p always",
     "mac": "electron-builder --mac",
     "win": "electron-builder --win",
-    "linux": "electron-builder --linux",
+    "linux": "electron-builder --linux -p always",
     "watch": "watchify src/app.js -t babelify -o src/js/bundle.js --debug --verbose",
-    "build": "npm run react-build && npm run linux && npm run win"
+    "build": "npm run react-build && electron-builder --win --linux -p always"
   }
 }

@@ -1,18 +1,18 @@
-import React from 'react';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import Button from '@material-ui/core/Button';
-import PapaParse from 'papaparse';
+import React from "react";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import Button from "@material-ui/core/Button";
+import PapaParse from "papaparse";
 
 const regex = /[^a-zA-Z\d?!\s@.äüöÄÖÜß]/g;
 
 class defaultGroup {
   constructor() {
     return {
-      mailAddress: 'tba',
-      name: 'tba',
-      postalAddress: 'tba',
-      eatingHabits: 'tba',
-      tel: 'tba',
+      mailAddress: "tba",
+      name: "tba",
+      postalAddress: "tba",
+      eatingHabits: "tba",
+      tel: "tba"
     };
   }
 }
@@ -21,7 +21,7 @@ class UploadButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      groups: [],
+      groups: []
     };
   }
 
@@ -33,15 +33,15 @@ class UploadButton extends React.Component {
         let error = true;
       }
       if (i === 0) return;
-      if (group[0] === '') return;
+      if (group[0] === "") return;
 
       groups.push({
         id: i - 1,
         mailAddress: group[1],
-        name: group[2].replace(regex, ''),
-        postalAddress: group[3].replace(regex, ''),
-        eatingHabits: group[4].replace(regex, ''),
-        tel: group[5],
+        name: group[2].replace(regex, ""),
+        postalAddress: group[3].replace(regex, ""),
+        eatingHabits: group[4].replace(regex, ""),
+        tel: group[5]
       });
     });
 
@@ -62,11 +62,11 @@ class UploadButton extends React.Component {
           accept="*.csv"
           id="outlined-button-file"
           type="file"
-          hidden="true"
-          onChange={(e) => {
+          hidden={true}
+          onChange={e => {
             let reader = new FileReader();
 
-            reader.onload = (event) => {
+            reader.onload = event => {
               const csvData = PapaParse.parse(event.target.result);
               this.handleData(csvData.data);
             };

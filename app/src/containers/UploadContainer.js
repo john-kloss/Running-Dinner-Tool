@@ -1,6 +1,6 @@
-import React from 'react';
-import { Typography } from '@material-ui/core';
-import ReactDOM from 'react-dom';
+import React from "react";
+import { Typography } from "@material-ui/core";
+import ReactDOM from "react-dom";
 
 class UploadContainer extends React.Component {
   render() {
@@ -8,14 +8,14 @@ class UploadContainer extends React.Component {
       <div>
         <Typography variant="subheading" gutterBottom paragraph>
           Für die Nutzung dieses Tools musst du die Teaminformationen über
-          Google Forms sammeln. Eine Vorlage dafür findest du{' '}
+          Google Forms sammeln. Eine Vorlage dafür findest du{" "}
           <a
             onClick={() =>
               window.open(
-                'https://docs.google.com/forms/d/1vvO8NXG78MsO5e4sOGtwEkixkuydAficClXSWkl3OyU/edit?usp=sharing'
+                "https://docs.google.com/forms/d/1vvO8NXG78MsO5e4sOGtwEkixkuydAficClXSWkl3OyU/edit?usp=sharing"
               )
             }
-            style={{ color: 'blue' }}
+            style={{ color: "blue" }}
             id="link-example"
           >
             hier
@@ -40,11 +40,9 @@ class UploadContainer extends React.Component {
   }
 }
 class SubWindow extends React.Component {
-  nativeWindowObject: null;
-
   componentWillMount() {
     this.nativeWindowObject = window.open(
-      'https://docs.google.com/forms/d/1vvO8NXG78MsO5e4sOGtwEkixkuydAficClXSWkl3OyU/edit?usp=sharing'
+      "https://docs.google.com/forms/d/1vvO8NXG78MsO5e4sOGtwEkixkuydAficClXSWkl3OyU/edit?usp=sharing"
     );
   }
   render() {

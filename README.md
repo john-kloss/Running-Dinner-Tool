@@ -4,7 +4,7 @@ Aktuellste Version: 2.0.0
 
 ## Downloads
 
-Das Programm kann hier heruntergeladen werden: [Download](https://github.com/john-kloss/Running-Dinner-Tool/releases/latest)
+Das Programm kann hier heruntergeladen werden: [Download](https://github.com/john-kloss/Running-Dinner-Tool/releases/latest) (Die .exe für Windows, die AppImage für Unix)
 
 Eine Demo-CSV wird zur Verfügung gestellt, um die Funktionalität testen zu können.
 

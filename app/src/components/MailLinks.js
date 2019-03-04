@@ -1,31 +1,34 @@
-import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import React from "react";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
 
 class MailLinks extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      contents: [],
+      contents: []
     };
   }
   generateMailContent(group, plan) {
-    const meals = ['starter', 'mainCourse', 'dessert'];
-    const mealsDE = ['Vorspeise', 'Hauptgericht', 'Nachspeise'];
+    const meals = ["starter", "mainCourse", "dessert"];
+    const mealsDE = ["Vorspeise", "Hauptgericht", "Nachspeise"];
     const times = this.props.times;
+    let link = "https://www.google.com/maps/dir/"; //52.1525898,11.6379123/52.1438987,11.6398427/@52.14407,11.6340063,15z";
     // add the beginning text
     let content = `Hallo ${group.name} \n ${this.props.texts[0]} %0D%0A%0D%0A `;
     // get the groups eating together
-    const mealGroups = meals.map((meal) => {
-      return plan[meal].filter((g) => g.find((a) => a.id === group.id))[0];
+    const mealGroups = meals.map(meal => {
+      return plan[meal].filter(g => g.find(a => a.id === group.id))[0];
     });
 
     // iterate of the three meals
     for (let i = 0; i < 3; i++) {
-      // if the meal is at your place
+      if (i === 1) link += "/";
+      if (i === 2) link += "/";
       if (group.id % 3 === i) {
-        const eatingWithYou = mealGroups[i].filter((g) => g.id !== group.id);
+        // if the meal is at your place
+        const eatingWithYou = mealGroups[i].filter(g => g.id !== group.id);
         content =
           content +
           `<b>${mealsDE[i]}</b> um ${times[i]} Uhr 
@@ -37,9 +40,11 @@ class MailLinks extends React.Component {
               Tel: ${eatingWithYou[1].tel}
               Essbesonderheiten: ${eatingWithYou[1].eatingHabits} %0D%0A
           `;
+        if (group.location)
+          link += group.location.lat + "," + group.location.lon;
       } else {
         // if the meal is at someone else's place
-        const preparingTheMeal = mealGroups[i].filter((g) => g.id % 3 === i)[0];
+        const preparingTheMeal = mealGroups[i].filter(g => g.id % 3 === i)[0];
         content =
           content +
           `<b>${mealsDE[i]}</b> um ${times[i]} Uhr
@@ -47,15 +52,22 @@ class MailLinks extends React.Component {
           Location: ${preparingTheMeal.postalAddress} 
           Tel: ${preparingTheMeal.tel} %0D%0A
           `;
+        if (group.location)
+          link +=
+            preparingTheMeal.location.lat + "," + preparingTheMeal.location.lon;
       }
     }
+    // add the link to the route
+    if (group.location)
+      content += `Hier findest du noch einmal deine komplette <a href="${link +
+        "/data=!3m1!4b1!4m2!4m1!3e1"}">Route</a>`;
     // add the end text
     content += this.props.texts[1];
 
     return content
-      .replace(/(?:\r\n|\r|\n)/g, '%0D%0A')
-      .replace(/,/g, '%2C')
-      .replace(/&/g, 'und');
+      .replace(/(?:\r\n|\r|\n)/g, "%0D%0A")
+      .replace(/,/g, "%2C")
+      .replace(/&/g, "und");
   }
   render() {
     const { plan, groups } = this.props;
@@ -72,7 +84,7 @@ class MailLinks extends React.Component {
           Gruppen verschicken kannst.
         </Typography>
         <Grid container spacing={24} justify="center">
-          {groups.map((group) => {
+          {groups.map(group => {
             const mailContent = this.generateMailContent(group, plan);
             return (
               <Grid
@@ -80,7 +92,7 @@ class MailLinks extends React.Component {
                 xs={3}
                 style={{
                   padding: 10,
-                  textAlign: 'center',
+                  textAlign: "center"
                 }}
               >
                 <a

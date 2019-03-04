@@ -3,7 +3,7 @@ const path = require("path");
 const url = require("url");
 const { autoUpdater } = require("electron-updater");
 
-let win;
+let win, modal;
 require("electron-reload")(__dirname + "/js");
 
 function createWindow() {
@@ -26,16 +26,13 @@ function createWindow() {
   win.on("closed", () => {
     win = null;
   });
+
+  // modal if update is available
+  modal = new BrowserWindow({ parent: win, modal: true, show: false });
 }
 
-autoUpdater.on("checking-for-update", () => {
-  console.log("Checking for update...");
-});
 autoUpdater.on("update-available", info => {
-  console.log("Update available.");
-});
-autoUpdater.on("update-not-available", info => {
-  console.log("Update not available.");
+  // modal.show();
 });
 autoUpdater.on("error", err => {
   console.log("Error in auto-updater. " + err);
@@ -43,6 +40,10 @@ autoUpdater.on("error", err => {
 app.on("ready", createWindow);
 app.on("ready", function() {
   autoUpdater.checkForUpdatesAndNotify();
+});
+
+autoUpdater.on("update-downloaded", info => {
+  autoUpdater.quitAndInstall();
 });
 
 app.on("window-all-closed", () => {

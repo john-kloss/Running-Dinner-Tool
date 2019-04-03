@@ -1,18 +1,16 @@
 # Running Dinner Tool
 
-Aktuellste Version: 2.0.0
-
 ## Downloads
 
 Das Programm kann hier heruntergeladen werden: [Download](https://github.com/john-kloss/Running-Dinner-Tool/releases/latest) (Die .exe für Windows, die AppImage für Unix)
 
 Eine Demo-CSV wird zur Verfügung gestellt, um die Funktionalität testen zu können.
 
-Demo-CSV: [Download](https://drive.google.com/uc?authuser=0&id=1pZAnFPGVcAT_cV7oVRHI9rAwqS--sSsk&export=download)
+Demo-CSV: [Download](https://drive.google.com/uc?authuser=0&id=1QN8YCVvG_Gm0ys2B8cr8cENLjeFDnnhJ&export=download)
 
 ## Anleitung
 
-Für die Nutzung dieses Tools musst du die Teaminformationen über Google Forms sammeln. Eine Vorlage dafür findest du [hier](https://drive.google.com/open?id=1pZAnFPGVcAT_cV7oVRHI9rAwqS--sSsk).
+Für die Nutzung dieses Tools musst du die Teaminformationen über Google Forms sammeln. Eine Vorlage dafür findest du [hier](https://docs.google.com/forms/d/1vvO8NXG78MsO5e4sOGtwEkixkuydAficClXSWkl3OyU/edit?usp=sharing).
 
 Bitte editiere das Original nicht. Logge dich mit einem Google-Account ein, kopiere dir das Formular (Die Drei Punkte rechts oben → Kopie erstellen) und passe die Beschreibungen an (Wichtig: Verändere die Reihenfolge der Fragen nicht!).
 

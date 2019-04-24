@@ -74,7 +74,7 @@ class TeamTable extends React.Component {
         )
       );
       let responseJson = await response.json();
-      console.log(responseJson);
+
       // if the address was found
       if (responseJson.length > 0) {
         const groups = this.state.groups;
@@ -111,14 +111,14 @@ class TeamTable extends React.Component {
 
     return (
       <div {...this.props}>
-        <div
-          style={{ width: 800, height: 500 }}
-          ref={el => (this.mapContainer = el)}
-        />
+        <div style={{ height: 500 }} ref={el => (this.mapContainer = el)} />
         {/* Dialog for address editing */}
         <Dialog
           open={this.state.open}
           onClose={() => this.setState({ open: false })}
+          onKeyPress={event => {
+            if (event.key == "Enter") this.onAddressEdited();
+          }}
         >
           <DialogTitle>Adresse bearbeiten</DialogTitle>
           <DialogContent>
@@ -182,7 +182,9 @@ class TeamTable extends React.Component {
                     {group.mailAddress}
                   </TableCell>
                   <TableCell>{group.name}</TableCell>
-                  <TableCell onClick={() => {}}>
+                  <TableCell
+                    style={{ color: group.location ? "black" : "red" }}
+                  >
                     {group.postalAddress}
                     <EditIcon
                       style={{ margin: 5 }}

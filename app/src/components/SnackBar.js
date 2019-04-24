@@ -4,10 +4,10 @@ import SnackbarContent from "@material-ui/core/SnackbarContent";
 import WarningIcon from "@material-ui/icons/Warning";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 
+/**
+ * @param {number} a Some Number
+ *  */
 class MySnackBar extends React.Component {
-  componentWillReceiveProps(props) {
-    console.log(props);
-  }
   render() {
     return (
       <Snackbar

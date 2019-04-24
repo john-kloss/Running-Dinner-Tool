@@ -3,10 +3,19 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import AppContainer from "./containers/AppContainer";
+import { createStore } from "redux";
+import appFunctions from "./redux/reducers";
+import { Provider } from "react-redux";
+
+const store = createStore(appFunctions);
 
 class App extends React.Component {
   render() {
-    return <AppContainer />;
+    return (
+      <Provider store={store}>
+        <AppContainer />
+      </Provider>
+    );
   }
 }
 

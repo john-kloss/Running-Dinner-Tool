@@ -14,7 +14,7 @@ class MailLinks extends React.Component {
     const meals = ["starter", "mainCourse", "dessert"];
     const mealsDE = ["Vorspeise", "Hauptgericht", "Nachspeise"];
     const times = this.props.times;
-    let link = "https://www.google.com/maps/dir/"; //52.1525898,11.6379123/52.1438987,11.6398427/@52.14407,11.6340063,15z";
+    let link = "https://www.google.com/maps/dir/";
     // add the beginning text
     let content = `Hallo ${group.name} \n ${this.props.texts[0]} %0D%0A%0D%0A `;
     // get the groups eating together
@@ -49,18 +49,20 @@ class MailLinks extends React.Component {
           content +
           `<b>${mealsDE[i]}</b> um ${times[i]} Uhr
           Bei: '${preparingTheMeal.name}'
-          Location: ${preparingTheMeal.postalAddress} 
+          Location: ${preparingTheMeal.postalAddress},  ${
+            preparingTheMeal.addressAddition
+          }
           Tel: ${preparingTheMeal.tel} %0D%0A
           `;
-        if (group.location)
+        if (group.location && preparingTheMeal.location)
           link +=
             preparingTheMeal.location.lat + "," + preparingTheMeal.location.lon;
       }
     }
     // add the link to the route
     if (group.location)
-      content += `Hier findest du noch einmal deine komplette <a href="${link +
-        "/data=!3m1!4b1!4m2!4m1!3e1"}">Route</a>`;
+      content += `Hier findet ihr noch einmal die komplette <a href="${link +
+        "/data=!3m1!4b1!4m2!4m1!3e1"}">Route</a>\n\n`;
     // add the end text
     content += this.props.texts[1];
 

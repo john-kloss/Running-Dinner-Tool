@@ -13,8 +13,10 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import StepContent from "@material-ui/core/StepContent";
 import Button from "@material-ui/core/Button";
+import { getTime, setTime } from "../redux/actions";
+import { connect } from "react-redux";
 
-class AppContainer extends React.Component {
+class AppContainerClass extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,6 +27,10 @@ class AppContainer extends React.Component {
       plan: {},
       showAlertDialog: false
     };
+  }
+  async componentDidMount() {
+    console.log(this.props.time);
+    this.props.setTime("123");
   }
   handleNext() {
     this.setState(state => ({
@@ -135,4 +141,15 @@ class AppContainer extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  time: state
+});
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  setTime: time => dispatch(setTime(time))
+});
+const AppContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AppContainerClass);
 export default AppContainer;

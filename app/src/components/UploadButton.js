@@ -6,14 +6,13 @@ import Switch from "@material-ui/core/Switch";
 import Button from "@material-ui/core/Button";
 import PapaParse from "papaparse";
 
-const regex = /[^a-zA-Z\d?!\s@.äüöÄÖÜß-]/g;
-
 class defaultGroup {
   constructor() {
     return {
       mailAddress: "tba",
       name: "tba",
       postalAddress: "tba",
+      addressAddition: "tba",
       eatingHabits: "tba",
       tel: "tba"
     };
@@ -52,7 +51,7 @@ class UploadButton extends React.Component {
     // iterate over all groups, transform array to object
     for (let i = 0; i < data.length; i++) {
       const group = data[i];
-      if (group.length !== 6) {
+      if (group.length !== 7) {
         let error = true;
       }
       if (i === 0) continue;
@@ -61,16 +60,17 @@ class UploadButton extends React.Component {
       this.setState({ progress: (i / data.length) * 100 });
       let location;
       if (this.state.useLocation) {
-        location = await this.getAddress(group[3].replace(regex, ""));
+        location = await this.getAddress(group[3]);
       }
 
       groups.push({
         id: i - 1,
         mailAddress: group[1],
-        name: group[2].replace(regex, ""),
-        postalAddress: group[3].replace(regex, ""),
-        eatingHabits: group[4].replace(regex, ""),
-        tel: group[5],
+        name: group[2],
+        postalAddress: group[3],
+        addressAddition: group[4],
+        eatingHabits: group[5],
+        tel: group[6],
         location: location
       });
     }
@@ -89,13 +89,12 @@ class UploadButton extends React.Component {
     return (
       <div>
         <input
-          accept="*.csv"
+          accept=".csv"
           id="outlined-button-file"
           type="file"
           hidden={true}
           onChange={e => {
             let reader = new FileReader();
-
             reader.onload = event => {
               const csvData = PapaParse.parse(event.target.result);
               this.handleData(csvData.data);

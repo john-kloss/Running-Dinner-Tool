@@ -1,9 +1,12 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, dialog } = require("electron");
 const path = require("path");
 const url = require("url");
 const { autoUpdater } = require("electron-updater");
 
-let win, modal;
+autoUpdater.logger = require("electron-log");
+autoUpdater.logger.transports.file.level = "info";
+
+let win;
 require("electron-reload")(__dirname + "/js");
 
 function createWindow() {
@@ -20,30 +23,75 @@ function createWindow() {
       slashes: true
     })
   );
-  win.webContents.openDevTools();
   win.maximize();
-
+  win.webContents.openDevTools();
   win.on("closed", () => {
     win = null;
   });
-
-  // modal if update is available
-  modal = new BrowserWindow({ parent: win, modal: true, show: false });
 }
 
-autoUpdater.on("update-available", info => {
-  // modal.show();
+/**
+ * Auto updater
+ */
+
+autoUpdater.on("update-available", () => {
+  dialog.showMessageBox(
+    {
+      type: "info",
+      title: "Update vorhanden",
+      isVisible: true,
+      message:
+        "Es ist ein Update vorhanden, möchtest du jetzt die aktuelle Version herunterladen?",
+      buttons: ["Ja", "Nein"]
+    },
+    buttonIndex => {
+      if (buttonIndex === 0) {
+        autoUpdater.downloadUpdate();
+      }
+    }
+  );
 });
+
+autoUpdater.on("download-progress", progressObj => {
+  let log_message = "Download speed: " + progressObj.bytesPerSecond;
+  log_message = log_message + " - Downloaded " + progressObj.percent + "%";
+  log_message =
+    log_message +
+    " (" +
+    progressObj.transferred +
+    "/" +
+    progressObj.total +
+    ")";
+  console.log(log_message);
+});
+
 autoUpdater.on("error", err => {
   console.log("Error in auto-updater. " + err);
 });
+
+autoUpdater.on("update-downloaded", () => {
+  dialog.showMessageBox(
+    {
+      title: "Updates installieren",
+      message:
+        "Update wurde heruntergeladen, die Anwendung wird geschlossen, um das Update zu installieren...",
+      buttons: ["OK"]
+    },
+    buttonIndex => {
+      if (buttonIndex === 0) {
+        autoUpdater.quitAndInstall();
+      }
+    }
+  );
+});
+
+/**
+ * App functions
+ */
+
 app.on("ready", createWindow);
 app.on("ready", function() {
   autoUpdater.checkForUpdatesAndNotify();
-});
-
-autoUpdater.on("update-downloaded", info => {
-  autoUpdater.quitAndInstall();
 });
 
 app.on("window-all-closed", () => {

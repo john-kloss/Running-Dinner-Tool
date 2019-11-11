@@ -10,7 +10,7 @@ Demo-CSV: [Download](https://drive.google.com/uc?authuser=0&id=1QN8YCVvG_Gm0ys2B
 
 ## Anleitung
 
-Für die Nutzung dieses Tools musst du die Teaminformationen über Google Forms sammeln. Eine Vorlage dafür findest du [hier](https://docs.google.com/forms/d/1vvO8NXG78MsO5e4sOGtwEkixkuydAficClXSWkl3OyU/edit?usp=sharing).
+Für die Nutzung dieses Tools musst du die Teaminformationen über Google Forms sammeln. Eine Vorlage dafür findest du [hier](https://docs.google.com/forms/d/1bqJfzDQmFSAOwvCb6gXIOHneBFyPJcTSSWg4NsVmD6c/edit?usp=sharing).
 
 Bitte editiere das Original nicht. Logge dich mit einem Google-Account ein, kopiere dir das Formular (Die Drei Punkte rechts oben → Kopie erstellen) und passe die Beschreibungen an (Wichtig: Verändere die Reihenfolge der Fragen nicht!).
 

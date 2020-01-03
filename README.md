@@ -1,5 +1,7 @@
 # Running Dinner Tool
 
+Das Runngin-Dinner-Tool erstellt dir vollautomatisch deinen Plan für den Abend. Die Teilnehmer melden sich im Voraus an, das Tool erstellt den Plan und verschickt E-Mails an alle Teilnehmer mit den relevanten Informationen.
+
 ## Downloads
 
 Das Programm kann hier heruntergeladen werden: [Download](https://github.com/john-kloss/Running-Dinner-Tool/releases/latest) (Die .exe für Windows, die AppImage für Unix)
@@ -7,6 +9,7 @@ Das Programm kann hier heruntergeladen werden: [Download](https://github.com/joh
 Eine Demo-CSV wird zur Verfügung gestellt, um die Funktionalität testen zu können.
 
 Demo-CSV: [Download](https://drive.google.com/uc?authuser=0&id=1pc8QYupO6iq7Armz6-Ds7xjJv7yu9Q6g&export=download)
+
 
 ## Anleitung
 

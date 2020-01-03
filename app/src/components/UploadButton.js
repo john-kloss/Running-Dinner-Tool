@@ -1,12 +1,13 @@
 import React from "react";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import RedoIcon from "@material-ui/icons/Redo";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Tooltip from "@material-ui/core/Tooltip";
 import Switch from "@material-ui/core/Switch";
 import Button from "@material-ui/core/Button";
 import PapaParse from "papaparse";
-
-const regex = /[^a-zA-Z\d?!\s@.äüöÄÖÜß-]/g;
+import { connect } from "react-redux";
+import { setUseLocation } from "../redux/actions";
 
 class defaultGroup {
   constructor() {
@@ -14,6 +15,7 @@ class defaultGroup {
       mailAddress: "tba",
       name: "tba",
       postalAddress: "tba",
+      addressAddition: "tba",
       eatingHabits: "tba",
       tel: "tba"
     };
@@ -25,8 +27,7 @@ class UploadButton extends React.Component {
     super(props);
     this.state = {
       groups: [],
-      progress: 0,
-      useLocation: true
+      progress: 0
     };
   }
 
@@ -36,6 +37,8 @@ class UploadButton extends React.Component {
         encodeURI(
           "https://nominatim.openstreetmap.org/search/" +
             address +
+            " " +
+            this.props.city +
             "?format=json&limit=1"
         )
       );
@@ -44,6 +47,7 @@ class UploadButton extends React.Component {
       else return null;
     } catch (error) {
       console.error(error);
+      return null;
     }
   }
 
@@ -52,7 +56,7 @@ class UploadButton extends React.Component {
     // iterate over all groups, transform array to object
     for (let i = 0; i < data.length; i++) {
       const group = data[i];
-      if (group.length !== 6) {
+      if (group.length !== 7) {
         let error = true;
       }
       if (i === 0) continue;
@@ -60,17 +64,18 @@ class UploadButton extends React.Component {
 
       this.setState({ progress: (i / data.length) * 100 });
       let location;
-      if (this.state.useLocation) {
-        location = await this.getAddress(group[3].replace(regex, ""));
+      if (this.props.useLocation) {
+        location = await this.getAddress(group[3]);
       }
 
       groups.push({
         id: i - 1,
         mailAddress: group[1],
-        name: group[2].replace(regex, ""),
-        postalAddress: group[3].replace(regex, ""),
-        eatingHabits: group[4].replace(regex, ""),
-        tel: group[5],
+        name: group[2],
+        postalAddress: group[3],
+        addressAddition: group[4],
+        eatingHabits: group[5],
+        tel: group[6],
         location: location
       });
     }
@@ -88,14 +93,25 @@ class UploadButton extends React.Component {
   render() {
     return (
       <div>
+        {this.props.groups.length !== 0 && (
+          <Button
+            variant="contained"
+            color="primary"
+            component="span"
+            size="large"
+            onClick={() => this.props.onUpload()}
+          >
+            Letzten Stand benutzen
+            <RedoIcon style={{ marginRight: 10 }} />
+          </Button>
+        )}
         <input
-          accept="*.csv"
+          accept=".csv"
           id="outlined-button-file"
           type="file"
           hidden={true}
           onChange={e => {
             let reader = new FileReader();
-
             reader.onload = event => {
               const csvData = PapaParse.parse(event.target.result);
               this.handleData(csvData.data);
@@ -116,11 +132,12 @@ class UploadButton extends React.Component {
         </label>
         <Tooltip title="Benutze Location (beta)">
           <Switch
-            checked={this.state.useLocation}
+            // checked={navigator.onLine ? settings.useLocation : false}
+            checked={this.props.useLocation}
             color="primary"
-            onChange={(event, checked) =>
-              this.setState({ useLocation: checked })
-            }
+            onChange={(event, checked) => {
+              this.props.setUseLocation(checked);
+            }}
           />
         </Tooltip>
         <LinearProgress
@@ -132,4 +149,10 @@ class UploadButton extends React.Component {
     );
   }
 }
-export default UploadButton;
+
+const mapStateToProps = state => state.settings;
+const mapDispatchToProps = dispatch => ({
+  setUseLocation: useLocation => dispatch(setUseLocation(useLocation))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(UploadButton);

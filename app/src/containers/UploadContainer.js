@@ -1,5 +1,7 @@
 import React from "react";
 import { Typography } from "@material-ui/core";
+import Tooltip from "@material-ui/core/Tooltip";
+import TextField from "@material-ui/core/TextField";
 import ReactDOM from "react-dom";
 
 class UploadContainer extends React.Component {
@@ -12,7 +14,7 @@ class UploadContainer extends React.Component {
           <a
             onClick={() =>
               window.open(
-                "https://docs.google.com/forms/d/1vvO8NXG78MsO5e4sOGtwEkixkuydAficClXSWkl3OyU/edit?usp=sharing"
+                "https://docs.google.com/forms/d/1bqJfzDQmFSAOwvCb6gXIOHneBFyPJcTSSWg4NsVmD6c/edit?usp=sharing"
               )
             }
             style={{ color: "blue" }}
@@ -35,10 +37,20 @@ class UploadContainer extends React.Component {
           Entzippe die Datei und lade sie hier im Programm über den
           Upload-Button hoch.
         </Typography>
+        <Tooltip title="Stadt des Running Dinners">
+          <TextField
+            id="city"
+            label="Stadt"
+            value={this.props.city}
+            onChange={event => this.props.onCityChanged(event.target.value)}
+            margin="normal"
+          />
+        </Tooltip>
       </div>
     );
   }
 }
+
 class SubWindow extends React.Component {
   componentWillMount() {
     this.nativeWindowObject = window.open(

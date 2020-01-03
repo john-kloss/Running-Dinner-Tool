@@ -1,9 +1,9 @@
 module.exports = {
-  extends: 'google',
+  extends: "eslint:recommended",
   rules: {
-    'require-jsdoc': 'off',
+    "require-jsdoc": "off"
   },
   parserOptions: {
-    ecmaVersion: 6,
-  },
+    ecmaVersion: 6
+  }
 };

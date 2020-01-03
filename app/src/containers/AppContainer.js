@@ -56,7 +56,6 @@ class AppContainer extends React.Component {
     } catch (error) {
       console.log("error: ", error);
     }
-    localStorage.clear();
 
     // save state before quit
     ipc.on("saveState", () => {

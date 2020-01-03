@@ -1,13 +1,15 @@
-import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import { TimePicker, ResultsTable, TextInput } from '../components';
+import React from "react";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import { connect } from "react-redux";
+import { TimePicker, ResultsTable, TextInput } from "../components";
+import { setTime, setText } from "../redux/actions";
 
 class PlanContainer extends React.Component {
   constructor() {
     super();
     this.state = {
-      plan: {},
+      plan: {}
     };
   }
 
@@ -26,30 +28,30 @@ class PlanContainer extends React.Component {
       n === 9
         ? [1, 2, 4, 8, 5, 7]
         : n === 12
-          ? [1, 2, 7, 11, 8, 10]
-          : n === 15
-            ? [1, 2, 7, 11, 8, 10]
-            : [1, 2, 7, 11, 14, 16];
+        ? [1, 2, 7, 11, 8, 10]
+        : n === 15
+        ? [1, 2, 7, 11, 8, 10]
+        : [1, 2, 7, 11, 14, 16];
     let plan = {
       starter: [],
       mainCourse: [],
-      dessert: [],
+      dessert: []
     };
     for (let i = 0; i < n - 1; i += 3) {
       plan.starter.push([
-        groups.find((g) => g.id === i),
-        groups.find((g) => g.id === (i + magicNumber[0]) % n),
-        groups.find((g) => g.id === (i + magicNumber[1]) % n),
+        groups.find(g => g.id === i),
+        groups.find(g => g.id === (i + magicNumber[0]) % n),
+        groups.find(g => g.id === (i + magicNumber[1]) % n)
       ]);
       plan.mainCourse.push([
-        groups.find((g) => g.id === i),
-        groups.find((g) => g.id === (i + magicNumber[2]) % n),
-        groups.find((g) => g.id === (i + magicNumber[3]) % n),
+        groups.find(g => g.id === i),
+        groups.find(g => g.id === (i + magicNumber[2]) % n),
+        groups.find(g => g.id === (i + magicNumber[3]) % n)
       ]);
       plan.dessert.push([
-        groups.find((g) => g.id === i),
-        groups.find((g) => g.id === (i + magicNumber[4]) % n),
-        groups.find((g) => g.id === (i + magicNumber[5]) % n),
+        groups.find(g => g.id === i),
+        groups.find(g => g.id === (i + magicNumber[4]) % n),
+        groups.find(g => g.id === (i + magicNumber[5]) % n)
       ]);
     }
     return plan;
@@ -71,18 +73,19 @@ class PlanContainer extends React.Component {
           generiert.
         </Typography>
         <TimePicker
-          onTimeChange={(times) => this.props.onTimeChange(times)}
-          times={this.props.times}
+          onTimeChange={time => this.props.setTime(time)}
+          times={this.props.time}
         />
         <TextInput
-          onTextChange={(texts) => this.props.onTextChange(texts)}
-          texts={this.props.texts}
+          onTextChange={text => this.props.setText(text)}
+          texts={this.props.text}
         />
         <Typography variant="subheading" gutterBottom paragraph>
           Hier noch eine Übersicht über die Zuteilung der Teams.
         </Typography>
         <ResultsTable plan={plan} groups={this.props.groups} />
         <Button
+          style={{ paddingTop: 10 }}
           variant="contained"
           color="primary"
           onClick={() => this.props.handleNext()}
@@ -93,4 +96,11 @@ class PlanContainer extends React.Component {
     );
   }
 }
-export default PlanContainer;
+
+const mapStateToProps = state => state.dinnerDetails;
+const mapDispatchToProps = dispatch => ({
+  setTime: time => dispatch(setTime(time)),
+  setText: text => dispatch(setText(text))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PlanContainer);

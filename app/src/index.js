@@ -1,22 +1,23 @@
-// //React libraries
-// import React from "react";
-// import { createStore } from "redux";
-// import { Provider } from "react-redux";
-// import { appFunctions } from "./redux/reducers";
-// import ReactDOM from "react-dom";
-// import AppContainer from "./containers/AppContainer";
+//React libraries
+import React from "react";
+import ReactDOM from "react-dom";
 
-// // const store = createStore(appFunctions);
+import AppContainer from "./containers/AppContainer";
+import { createStore } from "redux";
+import appFunctions from "./redux/reducers";
+import { Provider } from "react-redux";
 
-// class App extends React.Component {
-//   render() {
-//     return (
-//       <Provider store={store}>
-//         <AppContainer />
-//       </Provider>
-//     );
-//   }
-// }
+const store = createStore(appFunctions);
 
-// // Render to index.html
-// ReactDOM.render(<App />, document.getElementById("content"));
+class App extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <AppContainer />
+      </Provider>
+    );
+  }
+}
+
+// Render to index.html
+ReactDOM.render(<App />, document.getElementById("content"));

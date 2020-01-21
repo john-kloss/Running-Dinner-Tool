@@ -1,6 +1,8 @@
+Running Dinner (auch bekannt als Jumping Dinner, Auf Haxe, Dinner Hopping, Rudi rockt) sind tolle Gelegenheiten, um gemeinsam an verschieden Orten mit unterschiedlichen Leuten zu essen. Damit auch die Organisation davon einfach bleibt, gibt es das Running-Dinner-Tool.
+
 # Running Dinner Tool
 
-Das Runngin-Dinner-Tool erstellt dir vollautomatisch deinen Plan für den Abend. Die Teilnehmer melden sich im Voraus an, das Tool erstellt den Plan und verschickt E-Mails an alle Teilnehmer mit den relevanten Informationen.
+Das Runngin-Dinner-Tool erstellt dir vollautomatisch einen Plan für den Abend. Die Teilnehmer melden sich im Voraus an, das Tool erstellt den Plan und verschickt E-Mails an alle Teilnehmer mit den relevanten Informationen.
 
 ## Downloads
 
@@ -17,4 +19,6 @@ Für die Nutzung dieses Tools musst du die Teaminformationen über Google Forms 
 
 Bitte editiere das Original nicht. Logge dich mit einem Google-Account ein, kopiere dir das Formular (Die Drei Punkte rechts oben → Kopie erstellen) und passe die Beschreibungen an (Wichtig: Verändere die Reihenfolge der Fragen nicht!).
 
-Sobald sich alle Teams angemeldet haben, exportiere die Ergenisse als CSV (Antworten → Die Drei Punkte → Antworten herunterladen (CSV)).  Entzippe die Datei und lade sie hier im Programm über den Upload-Button hoch.
+Sobald sich alle Teams angemeldet haben, exportiere die Ergenisse als CSV (Antworten → Die Drei Punkte → Antworten herunterladen (CSV)).  Entzippe die Datei und lade sie im Programm hoch.
+
+Anschließend wird dein Plan erstellt und kann verschickt werden.

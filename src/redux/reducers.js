@@ -14,19 +14,11 @@ const defaultState = {
 };
 
 function dinnerDetails(state = defaultState, action) {
-  console.log(action);
   switch (action.type) {
     case SET_TIME:
       let newTime = state.time.slice();
       newTime.splice(action.payload.mealIndex, 1, action.payload.time);
       return { ...state, time: newTime };
-      return {
-        ...state,
-        time: [
-          ...state.time,
-          (state.time[action.payload.mealIndex]: action.payload.time)
-        ]
-      };
 
     case SET_TEXT:
       let newText = state.text.slice();

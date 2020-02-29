@@ -62,7 +62,7 @@ class PlanContainer extends React.Component {
     return (
       <div style={{ padding: 10 }}>
         <Typography
-          style={{ marginTop: 30 }}
+          style={{ marginTop: 20 }}
           variant="body1"
           gutterBottom
           paragraph
@@ -72,7 +72,7 @@ class PlanContainer extends React.Component {
           werden soll, eingeben. Die Mails werden dann automatisch für dich
           generiert.
         </Typography>
-        <TimePicker />
+        <TimePicker style={{ pading: 20 }} />
         <TextInput
           onTextChange={text => this.props.setText(text)}
           texts={this.props.text}

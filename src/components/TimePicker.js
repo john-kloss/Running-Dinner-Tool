@@ -8,10 +8,9 @@ import { connect } from "react-redux";
 
 class MyTimePicker extends React.Component {
   render() {
-    console.log(this.props);
     const courses = ["Vorspeise", "Hauptspeise", "Nachspeise"];
     return (
-      <Paper>
+      <Paper style={{ padding: 20 }}>
         <Grid
           container
           justify="center"

@@ -25,8 +25,7 @@ class AppContainer extends React.Component {
       groups: [],
       city: "",
       activeStep: 0,
-      plan: {},
-      showAlertDialog: false
+      plan: {}
     };
   }
 
@@ -35,19 +34,19 @@ class AppContainer extends React.Component {
     try {
       // groups, city, text and time
       let groups = localStorage.getItem("groups");
-      if (groups != "undefined" && groups != null) {
+      if (groups !== "undefined" && groups !== null) {
         groups = JSON.parse(groups);
       } else {
         groups = [];
       }
       let city = localStorage.getItem("city") || "Berlin";
       let text = localStorage.getItem("text");
-      if (text != "undefined" && text != null) {
+      if (text !== "undefined" && text !== null) {
         text = JSON.parse(text);
         this.props.setText(text);
       }
       let time = localStorage.getItem("time");
-      if (time != "undefined" && time != null) {
+      if (time !== "undefined" && time !== null) {
         time = JSON.parse(time);
         this.props.setTime(time);
       }
@@ -91,7 +90,6 @@ class AppContainer extends React.Component {
             <UploadButton
               groups={this.state.groups}
               city={this.state.city}
-              showAlertDialog={() => this.setState({ showAlertDialog: true })}
               onUpload={groups => {
                 // trick to use previous groups
                 if (groups) {
@@ -143,13 +141,7 @@ class AppContainer extends React.Component {
 
     return (
       <PaperSheet headline={"Running Dinner Tool"}>
-        <AlertDialog
-          open={this.state.showAlertDialog}
-          title="Zu wenige Gruppen"
-          content="Die Anzahl der Gruppen muss durch 3 teilbar sein. 
-          Die Liste wurde mit Default-Gruppen aufgefüllt."
-          handleClose={() => this.setState({ showAlertDialog: false })}
-        />
+        <AlertDialog />
         <Stepper activeStep={activeStep} orientation="vertical">
           {steps.map((label, index) => {
             return (

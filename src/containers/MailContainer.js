@@ -157,7 +157,10 @@ class MailContainer extends React.Component {
           <Typography variant="body1" gutterBottom paragraph>
             Hier noch eine Übersicht über die Zuteilung der Teams. Die fett
             gedruckten Teams bereiten den jeweiligen Gang vor. Mach dir ruhig
-            ein Foto oder einen Screenshot davon 😉
+            ein Foto oder einen Screenshot davon{" "}
+            <span role="img" aria-label="smiley">
+              😉
+            </span>
           </Typography>
           <ResultsTable plan={plan} groups={this.props.groups} />
         </Paper>

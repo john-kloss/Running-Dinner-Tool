@@ -2,7 +2,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import AppContainer from "./containers/AppContainer";
+import { AppContainer } from "./containers";
 import { createStore } from "redux";
 import appFunctions from "./redux/reducers";
 import { Provider } from "react-redux";

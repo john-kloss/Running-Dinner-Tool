@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { SET_TIME, SET_TEXT, SET_USE_LOCATION } from "./actions";
+import { SET_TIME, SET_TEXT, SET_USE_LOCATION, SET_DIALOG } from "./actions";
 
 const defaultState = {
   time: [
@@ -30,7 +30,7 @@ function dinnerDetails(state = defaultState, action) {
 }
 
 const defaultSettings = {
-  useLocation: true
+  useLocation: false
 };
 
 function settings(state = defaultSettings, action) {
@@ -42,5 +42,26 @@ function settings(state = defaultSettings, action) {
   }
 }
 
-const appFunctions = combineReducers({ dinnerDetails, settings });
+const defaultDialog = {
+  open: false,
+  title: "default title",
+  content: "default content"
+};
+
+function dialog(state = defaultDialog, action) {
+  switch (action.type) {
+    case SET_DIALOG: {
+      return {
+        ...state,
+        open: action.payload.open,
+        title: action.payload.title,
+        content: action.payload.content
+      };
+    }
+    default:
+      return state;
+  }
+}
+
+const appFunctions = combineReducers({ dinnerDetails, settings, dialog });
 export default appFunctions;

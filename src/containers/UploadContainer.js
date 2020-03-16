@@ -2,7 +2,6 @@ import React from "react";
 import { Typography } from "@material-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
 import TextField from "@material-ui/core/TextField";
-import ReactDOM from "react-dom";
 
 class UploadContainer extends React.Component {
   render() {
@@ -12,6 +11,7 @@ class UploadContainer extends React.Component {
           Für die Nutzung dieses Tools musst du die Teaminformationen über
           Google Forms sammeln. Eine Vorlage dafür findest du{" "}
           <a
+            href="#top"
             onClick={() =>
               window.open(
                 "https://docs.google.com/forms/d/1bqJfzDQmFSAOwvCb6gXIOHneBFyPJcTSSWg4NsVmD6c/edit?usp=sharing"
@@ -51,19 +51,4 @@ class UploadContainer extends React.Component {
   }
 }
 
-class SubWindow extends React.Component {
-  componentWillMount() {
-    this.nativeWindowObject = window.open(
-      "https://docs.google.com/forms/d/1vvO8NXG78MsO5e4sOGtwEkixkuydAficClXSWkl3OyU/edit?usp=sharing"
-    );
-  }
-  render() {
-    return this.nativeWindowObject
-      ? ReactDOM.createPortal(
-          this.props.children,
-          this.nativeWindowObject.document.body
-        )
-      : null;
-  }
-}
 export default UploadContainer;

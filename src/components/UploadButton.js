@@ -6,7 +6,7 @@ import Switch from "@material-ui/core/Switch";
 import Button from "@material-ui/core/Button";
 import PapaParse from "papaparse";
 import { connect } from "react-redux";
-import { setUseLocation } from "../redux/actions";
+import { setUseLocation, setDialog } from "../redux/actions";
 
 class defaultGroup {
   constructor() {
@@ -51,42 +51,59 @@ class UploadButton extends React.Component {
   }
 
   async handleData(data) {
-    let groups = [];
-    // iterate over all groups, transform array to object
-    for (let i = 0; i < data.length; i++) {
-      const group = data[i];
-      if (group.length !== 7) {
-        let error = true;
-      }
-      if (i === 0) continue;
-      if (group[0] === "") continue;
+    try {
+      let groups = [];
+      // iterate over all groups, transform array to object
+      for (let i = 1; i < data.length; i++) {
+        const group = data[i];
+        // ignore empty lines
+        if (group[0] === "") continue;
 
-      this.setState({ progress: (i / data.length) * 100 });
-      let location;
-      if (this.props.useLocation) {
-        location = await this.getAddress(group[3]);
+        // throw error
+        if (group.length !== 7) {
+          throw Error({ i: i });
+        }
+
+        this.setState({ progress: (i / data.length) * 100 });
+        let location;
+        if (this.props.useLocation) {
+          location = await this.getAddress(group[3]);
+        }
+
+        groups.push({
+          id: i - 1,
+          mailAddress: group[1],
+          name: group[2],
+          postalAddress: group[3],
+          addressAddition: group[4],
+          eatingHabits: group[5],
+          tel: group[6],
+          location: location
+        });
       }
 
-      groups.push({
-        id: i - 1,
-        mailAddress: group[1],
-        name: group[2],
-        postalAddress: group[3],
-        addressAddition: group[4],
-        eatingHabits: group[5],
-        tel: group[6],
-        location: location
+      // in case we don't have enough groups, add default groups
+      while (groups.length % 3 !== 0) {
+        const group = new defaultGroup();
+        group.id = groups.length;
+        groups.push(group);
+        this.props.setDialog({
+          open: true,
+          title: "Warnung",
+          content:
+            "Die Anzahl der Gruppen ist nicht durch 3 teilbar. DIe Liste wurde mit Default-Gruppen aufgefüllt."
+        });
+      }
+      // successful upload
+      this.props.onUpload(groups);
+    } catch (e) {
+      setDialog({
+        title: "Fehler beim Import",
+        content:
+          "Die Gruppe " + e.i + "hat nicht die richtige Anzahl an Einträgen.",
+        open: true
       });
     }
-
-    // in case we don't have enough groups, add default groups
-    while (groups.length % 3 !== 0) {
-      const group = new defaultGroup();
-      group.id = groups.length;
-      groups.push(group);
-      this.props.showAlertDialog();
-    }
-    this.props.onUpload(groups);
   }
 
   render() {
@@ -107,6 +124,7 @@ class UploadButton extends React.Component {
         <input
           accept=".csv"
           id="outlined-button-file"
+          data-testid="csvInput"
           type="file"
           hidden={true}
           onChange={e => {
@@ -154,7 +172,8 @@ class UploadButton extends React.Component {
 
 const mapStateToProps = state => state.settings;
 const mapDispatchToProps = dispatch => ({
-  setUseLocation: useLocation => dispatch(setUseLocation(useLocation))
+  setUseLocation: useLocation => dispatch(setUseLocation(useLocation)),
+  setDialog: dialog => dispatch(setDialog(dialog))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UploadButton);
